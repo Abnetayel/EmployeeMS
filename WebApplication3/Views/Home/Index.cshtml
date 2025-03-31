@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container mt-5">
+    <div class="jumbotron bg-light p-5 rounded shadow">
+        <h1 class="display-4 text-primary">Welcome to Employee Management System!</h1>
+        <p class="lead">Streamline your employee data and management processes.</p>
+        <hr class="my-4">
+        <p>
+            Efficiently manage employee information, track attendance, and generate reports.
+            Our system simplifies administrative tasks, allowing you to focus on your core business objectives.
+        </p>
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-primary btn-lg me-3" asp-controller="Employes" asp-action="Index" role="button">
+                <i class="fas fa-users"></i> View Employees
+            </a>
+            <a class="btn btn-success btn-lg" asp-controller="Employes" asp-action="Create" role="button">
+                <i class="fas fa-plus-circle"></i> Add New Employee
+            </a>
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card border-primary mb-3">
+                <div class="card-header bg-primary text-white"><i class="fas fa-database"></i> Manage Data</div>
+                <div class="card-body text-primary">
+                    <h5 class="card-title">Centralized Information</h5>
+                    <p class="card-text">Keep all employee data in one secure and easily accessible location.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-success mb-3">
+                <div class="card-header bg-success text-white"><i class="fas fa-chart-line"></i> Generate Reports</div>
+                <div class="card-body text-success">
+                    <h5 class="card-title">Comprehensive Reporting</h5>
+                    <p class="card-text">Create detailed reports on employee performance, attendance, and other key metrics.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-info mb-3">
+                <div class="card-header bg-info text-white"><i class="fas fa-user-cog"></i> Simplify Administration</div>
+                <div class="card-body text-info">
+                    <h5 class="card-title">Efficient Workflow</h5>
+                    <p class="card-text">Automate administrative tasks and streamline your HR processes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

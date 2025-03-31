@@ -1,0 +1,68 @@
+﻿@model WebApplication3.Models.Employe
+
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fas fa-info-circle"></i> @ViewData["Title"]</h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.FirstName)
+                        </dd>
+                        
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MiddleName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MiddleName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LastName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.PhoneNumber)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Country)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Country)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="card-footer text-muted">
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
