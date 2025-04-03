@@ -69,8 +69,12 @@ namespace WebApplication3.Controllers
                 
                 ModelState.Clear();
 
-                
-                return RedirectToAction("Login", "Account");
+
+                //return RedirectToAction("Login", "Account");
+                TempData["Message"] = $"{account.UserName} registered successfully. Please login.";
+                return RedirectToAction("Login");
+
+
             }
             catch (DbUpdateException ex)
             {

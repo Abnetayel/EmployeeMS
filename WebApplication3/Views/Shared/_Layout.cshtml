@@ -38,6 +38,11 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
+                                <span class="nav-link text-white">
+                                    Welcome, @User.FindFirst("Name")?.Value
+                                </span>
+                            </li>
+                            <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
                                     <button type="submit" class="btn btn-link nav-link text-white">
                                         <i class="fas fa-sign-out-alt"></i> Logout

@@ -14,10 +14,19 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
-                <div class="card shadow-lg p-4">
-                    <h2 class="text-center mb-4">Register</h2>
+                <div class="card shadow-lg p-4"> 
+                    
+                    
 
                     <form asp-action="Registation" method="post">
+                        @* @if (ViewBag.Message != null) *@
+                        @* { *@
+                        @*     <div class="form-group" style="color:green">@ViewBag.Message</div> *@
+                        @* } *@
+                        @* else *@
+                        @* { *@
+                        @*     <h2 class="text-center mb-4">Register</h2> *@
+                        @* } *@
                         <div class="form-group mb-3">
                             <label asp-for="UserName" class="form-label">UserName</label>
                             <input asp-for="UserName" class="form-control" placeholder="Enter your username" />

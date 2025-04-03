@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ISO3166;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Models;
+using ISO3166; // Import the package
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace WebApplication3.Controllers
 {
@@ -48,6 +52,14 @@ namespace WebApplication3.Controllers
         // GET: Employes/Create
         public IActionResult Create()
         {
+            var countries = Country.List.Select(c => new { c.Name }).ToList();
+            ViewBag.Countries = new SelectList(countries, "Name", "Name");
+
+            //var countries = Country.List.Select(c => new { c.Name, c.TwoLetterCode }).ToList();
+            //ViewBag.Countries = countries;
+            //var countries = Country.List.Select(c => new { c.Name, c.TwoLetterCode }).ToList();
+            //ViewBag.Countries = new SelectList(countries, "TwoLetterCode", "Name");
+
             return View();
         }
 
@@ -80,6 +92,14 @@ namespace WebApplication3.Controllers
             {
                 return NotFound();
             }
+            var countries = Country.List.Select(c => new { c.Name }).ToList();
+            ViewBag.Countries = new SelectList(countries, "Name", "Name");
+
+            //var countries = Country.List.Select(c => new { c.Name, c.TwoLetterCode }).ToList();
+            //ViewBag.Countries = countries;
+            //var countries = Country.List.Select(c => new { c.Name, c.TwoLetterCode }).ToList();
+            //ViewBag.Countries = new SelectList(countries, "TwoLetterCode", "Name");
+
             return View(employe);
         }
 

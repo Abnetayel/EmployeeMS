@@ -16,6 +16,11 @@
             <div class="col-md-6 col-lg-4">
                 <div class="card shadow-lg p-4">
                     <h2 class="text-center mb-4">Login</h2>
+                    @if (TempData["Message"] != null)
+                    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+                    }
+
 
                     <form asp-action="Login" method="post">
                         <div class="form-group mb-3">
