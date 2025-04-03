@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using WebApplication3.Models;
 
 namespace WebApplication3.Controllers
 {
+    [Authorize]
     public class EmployesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +24,7 @@ namespace WebApplication3.Controllers
         // GET: Employes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.employee.ToListAsync());
+            return View(await _context.Employee.ToListAsync());
         }
 
         // GET: Employes/Details/5
@@ -33,7 +35,7 @@ namespace WebApplication3.Controllers
                 return NotFound();
             }
 
-            var employe = await _context.employee
+            var employe = await _context.Employee
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (employe == null)
             {
@@ -73,7 +75,7 @@ namespace WebApplication3.Controllers
                 return NotFound();
             }
 
-            var employe = await _context.employee.FindAsync(id);
+            var employe = await _context.Employee.FindAsync(id);
             if (employe == null)
             {
                 return NotFound();
@@ -124,7 +126,7 @@ namespace WebApplication3.Controllers
                 return NotFound();
             }
 
-            var employe = await _context.employee
+            var employe = await _context.Employee
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (employe == null)
             {
@@ -139,10 +141,10 @@ namespace WebApplication3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employe = await _context.employee.FindAsync(id);
+            var employe = await _context.Employee.FindAsync(id);
             if (employe != null)
             {
-                _context.employee.Remove(employe);
+                _context.Employee.Remove(employe);
             }
 
             await _context.SaveChangesAsync();
@@ -151,7 +153,7 @@ namespace WebApplication3.Controllers
 
         private bool EmployeExists(int id)
         {
-            return _context.employee.Any(e => e.Id == id);
+            return _context.Employee.Any(e => e.Id == id);
         }
     }
 }

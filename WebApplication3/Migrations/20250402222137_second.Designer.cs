@@ -11,8 +11,8 @@ using WebApplication3.Data;
 namespace WebApplication3.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250330151924_Initialmigration")]
-    partial class Initialmigration
+    [Migration("20250402222137_second")]
+    partial class second
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,40 @@ namespace WebApplication3.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("WebApplication3.Data.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+                });
 
             modelBuilder.Entity("WebApplication3.Models.Employe", b =>
                 {
@@ -58,7 +92,7 @@ namespace WebApplication3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("employee");
+                    b.ToTable("Employee");
                 });
 #pragma warning restore 612, 618
         }
