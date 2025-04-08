@@ -1,111 +1,299 @@
-﻿@* @using WebApplication3.Data *@
-@* @model List<User> *@
-@* @{ *@
-@*     ViewData["Title"] = "Super Admin Dashboard"; *@
-@* } *@
-
-@* <div class="container mt-4"> *@
-@*     <h2>Super Admin Dashboard</h2> *@
-
-@*     <div class="mb-3"> *@
-@*         <a asp-action="AddAdmin" class="btn btn-primary">Add New Admin</a> *@
-@*         <a asp-action="AddUser" class="btn btn-secondary">Add New User</a> *@
-@*         <a asp-action="AddEmployee" class="btn btn-info">Add New Employee</a> *@
-@*     </div> *@
-
-@*     <h4>All Users</h4> *@
-@*     <table class="table table-striped"> *@
-@*         <thead> *@
-@*             <tr> *@
-@*                 <th>Username</th> *@
-@*                 <th>Email</th> *@
-@*                 <th>Role</th> *@
-@*             </tr> *@
-@*         </thead> *@
-@*         <tbody> *@
-@*             @foreach (var user in Model) *@
-@*             { *@
-@*                 <tr> *@
-@*                     <td>@user.UserName</td> *@
-@*                     <td>@user.Email</td> *@
-@*                     <td>@user.Role</td> *@
-@*                 </tr> *@
-@*             } *@
-@*         </tbody> *@
-@*     </table> *@
-@* </div> *@
-
-
-
-
-
-@using WebApplication3.Data
+﻿@using WebApplication3.Data
 @model List<User>
 @{
     ViewData["Title"] = "Super Admin Dashboard";
 }
 
-<div class="container mt-4">
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center py-3 mb-4 border-bottom">
+        <h1 class="display-6 fw-bold text-primary">
+            <i class="fas fa-tachometer-alt me-2"></i>Super Admin Dashboard
+        </h1>
+        <div>
+            <a asp-action="AddAdmin" class="btn btn-primary me-2">
+                <i class="fas fa-user-shield me-2"></i>Add Admin
+            </a>
+            <a asp-action="AddUser" class="btn btn-success me-2">
+                <i class="fas fa-user-plus me-2"></i>Add User
+            </a>
+            <a asp-action="AddEmployee" class="btn btn-info">
+                <i class="fas fa-user-tie me-2"></i>Add Employee
+            </a>
+        </div>
+    </div>
 
+    <!-- Alerts -->
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     }
     @if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     }
 
-    <h2>Super Admin Dashboard</h2>
-
-    <div class="mb-3">
-        <a asp-action="AddAdmin" class="btn btn-primary">Add New Admin</a>
-        <a asp-action="AddUser" class="btn btn-secondary">Add New User</a>
-        <a asp-action="AddEmployee" class="btn btn-info">Add New Employee</a>
+    <!-- Users Table -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-column flex-md-row justify-content-between align-items-center bg-white">
+            <h6 class="m-0 fw-bold text-primary mb-2 mb-md-0">User Management</h6>
+            <div class="d-flex flex-column flex-md-row w-100 w-md-auto">
+                <div class="input-group mb-2 mb-md-0 me-md-2">
+                    <span class="input-group-text bg-transparent"><i class="fas fa-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search users...">
+                    <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-filter me-1"></i>Filters
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="filterDropdown" style="min-width: 250px;">
+                        <h6 class="dropdown-header">Filter Options</h6>
+                        <div class="mb-3">
+                            <label for="roleFilter" class="form-label">Role</label>
+                            <select class="form-select" id="roleFilter">
+                                <option value="">All Roles</option>
+                                <option value="SuperAdmin">Super Admin</option>
+                                <option value="Admin">Admin</option>
+                                <option value="User">User</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="statusFilter" class="form-label">Status</label>
+                            <select class="form-select" id="statusFilter">
+                                <option value="">All Statuses</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary w-100" id="applyFilters">Apply Filters</button>
+                        <button class="btn btn-link text-danger w-100 mt-2" id="resetFilters">Reset Filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover" id="userTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th data-sort="username">Username <i class="fas fa-sort ms-1"></i></th>
+                            <th data-sort="email">Email <i class="fas fa-sort ms-1"></i></th>
+                            <th data-sort="role">Role <i class="fas fa-sort ms-1"></i></th>
+                            <th data-sort="status">Status <i class="fas fa-sort ms-1"></i></th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr data-role="@user.Role" data-status="Active">
+                                <td data-username="@user.UserName.ToLower()">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-3">
+                                            <span class="avatar-title bg-primary rounded-circle text-white">
+                                                @user.UserName.Substring(0, 1).ToUpper()
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">@user.UserName</h6>
+                                            <small class="text-muted">Last active: Today</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-email="@user.Email.ToLower()">@user.Email</td>
+                                <td data-role="@user.Role.ToLower()">
+                                    @if (user.Role == "SuperAdmin")
+                                    {
+                                        <span class="badge bg-warning text-dark"><i class="fas fa-crown me-1"></i>@user.Role</span>
+                                    }
+                                    else if (user.Role == "Admin")
+                                    {
+                                        <span class="badge bg-primary"><i class="fas fa-user-shield me-1"></i>@user.Role</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success"><i class="fas fa-user me-1"></i>@user.Role</span>
+                                    }
+                                </td>
+                                <td data-status="active">
+                                    <span class="badge bg-success">Active</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary me-2" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="DetailUser" asp-route-id="@user.Id" class="btn btn-sm btn-outline-info me-2" title="Details">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="DeleteUser" asp-route-id="@user.Id" class="btn btn-sm btn-outline-danger" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div id="noResults" class="text-center py-5" style="display: none;">
+                    <i class="fas fa-user-slash fa-3x text-muted mb-3"></i>
+                    <h5>No users found</h5>
+                    <p class="text-muted">Try adjusting your search or filter criteria</p>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <h4>All Users</h4>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Role</th> 
-               <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in Model)
-            {
-                <tr>
-                    <td>@user.UserName</td>
-                    <td>@user.Email</td>
-                    <td>@user.Role</td>
-                    @* <td> *@
-                    @*     <form asp-action="UpdateRole" method="post"> *@
-                    @*         <input type="hidden" name="userId" value="@user.Id" /> *@
-                    @*         <select name="newRole" class="form-select form-select-sm" *@
-                    @*                 onchange="this.form.submit()"> *@
-                    @*             <option value="SuperAdmin" selected="@(user.Role == "SuperAdmin")">Super Admin</option> *@
-                    @*             <option value="Admin" selected="@(user.Role == "Admin")">Admin</option> *@
-                    @*             <option value="User" selected="@(user.Role == "User")">User</option> *@
-                    @*         </select> *@
-                    @*     </form> *@
-                    @* </td> *@
-                    <td>
-                        <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i> Edit
-                        </a>
-                        <a asp-action="DeleteUser" asp-route-id="@user.Id" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </a>
-                        <a asp-action="DetailUser" asp-route-id="@user.Id" class="btn btn-info btn-sm">
-                            <i class="fas fa-info-circle"></i> Detail
-                        </a>
-                   
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
 </div>
+
+@section Styles {
+    <style>
+        .avatar-sm {
+            width: 36px;
+            height: 36px;
+            font-size: 0.875rem;
+        }
+
+        .avatar-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        th[data-sort] {
+            cursor: pointer;
+            position: relative;
+        }
+
+            th[data-sort]:hover {
+                background-color: rgba(0, 0, 0, 0.03);
+            }
+
+        .sort-icon {
+            margin-left: 5px;
+        }
+
+        .dropdown-menu {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Search functionality
+            $('#searchInput').on('keyup', function() {
+                const searchText = $(this).val().toLowerCase();
+                let hasResults = false;
+
+                $('tbody tr').each(function() {
+                    const username = $(this).find('td[data-username]').data('username');
+                    const email = $(this).find('td[data-email]').data('email');
+                    const matchesSearch = username.includes(searchText) || email.includes(searchText);
+
+                    if (matchesSearch) {
+                        $(this).show();
+                        hasResults = true;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                toggleNoResults(!hasResults);
+            });
+
+            // Clear search
+            $('#clearSearch').click(function() {
+                $('#searchInput').val('').trigger('keyup');
+            });
+
+            // Apply filters
+            $('#applyFilters').click(function() {
+                const roleFilter = $('#roleFilter').val().toLowerCase();
+                const statusFilter = $('#statusFilter').val().toLowerCase();
+                let hasResults = false;
+
+                $('tbody tr').each(function() {
+                    const role = $(this).data('role');
+                    const status = $(this).data('status');
+                    const matchesRole = !roleFilter || role === roleFilter;
+                    const matchesStatus = !statusFilter || status === statusFilter.toLowerCase();
+                    const isVisible = matchesRole && matchesStatus;
+
+                    if (isVisible) {
+                        $(this).show();
+                        hasResults = true;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                toggleNoResults(!hasResults);
+                $('.dropdown-menu').removeClass('show');
+            });
+
+            // Reset filters
+            $('#resetFilters').click(function() {
+                $('#roleFilter').val('');
+                $('#statusFilter').val('');
+                $('#applyFilters').click();
+            });
+
+            // Sorting functionality
+            $('th[data-sort]').click(function() {
+                const column = $(this).data('sort');
+                const order = $(this).hasClass('sort-asc') ? 'desc' : 'asc';
+                const $rows = $('tbody tr').get();
+
+                // Reset all sort indicators
+                $('th[data-sort] i').removeClass('fa-sort-up fa-sort-down').addClass('fa-sort');
+
+                // Set current sort indicator
+                $(this).find('i')
+                    .removeClass('fa-sort')
+                    .addClass(order === 'asc' ? 'fa-sort-up' : 'fa-sort-down');
+
+                // Sort rows
+                $rows.sort(function(a, b) {
+                    const aVal = $(a).find(`td[data-${column}]`).data(column) || $(a).find(`td[data-${column}]`).text().toLowerCase();
+                    const bVal = $(b).find(`td[data-${column}]`).data(column) || $(b).find(`td[data-${column}]`).text().toLowerCase();
+
+                    if (order === 'asc') {
+                        return aVal > bVal ? 1 : -1;
+                    } else {
+                        return aVal < bVal ? 1 : -1;
+                    }
+                });
+
+                // Reattach sorted rows
+                $.each($rows, function(index, row) {
+                    $('tbody').append(row);
+                });
+
+                $(this).toggleClass('sort-asc sort-desc');
+            });
+
+            function toggleNoResults(show) {
+                if (show) {
+                    $('#noResults').show();
+                } else {
+                    $('#noResults').hide();
+                }
+            }
+        });
+    </script>
+}

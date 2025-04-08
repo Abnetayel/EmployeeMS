@@ -1,58 +1,289 @@
 ﻿@model IEnumerable<WebApplication3.Models.Employe>
 
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Employee Dashboard";
 }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="text-primary">Employee List</h1>
-        <a asp-action="Create" class="btn btn-success">
-            <i class="fas fa-plus"></i> Add New Employee
-        </a>
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center py-3 mb-4 border-bottom">
+        <h1 class="display-6 fw-bold text-primary">
+            <i class="fas fa-users me-2"></i>Employee Dashboard
+        </h1>
+        <div>
+            <a asp-action="Create" class="btn btn-success">
+                <i class="fas fa-user-plus me-2"></i>Add New Employee
+            </a>
+        </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.FirstName)</th>
-                    <th>@Html.DisplayNameFor(model => model.MiddleName)</th>
-                    <th>@Html.DisplayNameFor(model => model.LastName)</th>
-                    <th>@Html.DisplayNameFor(model => model.Email)</th>
-                    <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
-                    <th>@Html.DisplayNameFor(model => model.Country)</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.MiddleName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.LastName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                        <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Country)</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
-                                <i class="fas fa-info-circle"></i> Details
-                            </a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash-alt"></i> Delete
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-primary border-4 shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col me-2">
+                            <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+                                Total Employees
+                            </div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">@Model.Count()</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-success border-4 shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col me-2">
+                            <div class="text-xs fw-bold text-success text-uppercase mb-1">
+                                New This Month
+                            </div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                @Model.Count(e => e.DateOfRegistration >= DateTime.Now.AddMonths(-1))
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-info border-4 shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col me-2">
+                            <div class="text-xs fw-bold text-info text-uppercase mb-1">
+                                Avg. Experience
+                            </div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                @(Model.Any() ? Model.Average(e => e.Experience).ToString("0.0") : "0") years
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-start border-warning border-4 shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col me-2">
+                            <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+                                Top Skill
+                            </div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                @(Model.SelectMany(e => e.Skills.Split(',')).GroupBy(s => s.Trim()).OrderByDescending(g => g.Count()).FirstOrDefault()?.Key ?? "N/A")
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-code fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee Table with Enhanced Features -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center bg-white">
+            <h6 class="m-0 fw-bold text-primary">Employee Records</h6>
+            <div class="d-flex">
+                <input type="text" id="searchInput" c lass="form-control me-2" placeholder="Search employees..." style="width: 250px;">
+                <button class="btn btn-outline-secondary" type="button" id="filterBtn">
+                    <i class="fas fa-filter me-1"></i>Filters
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover" id="employeeTable" width="100%" cellspacing="0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.FullName)</th>
+                            <th>@Html.DisplayNameFor(model => model.Age)</th>
+                            <th>@Html.DisplayNameFor(model => model.Experience)</th>
+                            <th>@Html.DisplayNameFor(model => model.DateOfRegistration)</th>
+                            <th>@Html.DisplayNameFor(model => model.Education)</th>
+                            <th>@Html.DisplayNameFor(model => model.Skills)</th>
+                            <th>@Html.DisplayNameFor(model => model.EmployementType)</th>
+                            @* <th>@Html.DisplayNameFor(model => model.Salary)</th> *@
+                            @* <th>@Html.DisplayNameFor(model => model.Currency)</th> *@
+                            <th>Salary</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-3">
+                                            <span class="avatar-title bg-primary rounded-circle text-white">
+                                                @item.FullName.Split(' ').Select(x => x[0]).Aggregate("", (a, b) => a + b)
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">@item.FullName</h6>
+                                            <small class="text-muted">@item.Country</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@item.Age</td>
+                                <td>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                             style="width: @(item.Experience * 10)%;"
+                                             aria-valuenow="@item.Experience"
+                                             aria-valuemin="0"
+                                             aria-valuemax="10">
+                                        </div>
+                                    </div>
+                                    <small>@item.Experience years</small>
+                                </td>
+                                <td>@item.DateOfRegistration.ToString("dd MMM yyyy")</td>
+                                <td>
+                                    <span class="badge bg-info text-dark">@item.Education</span>
+                                </td>
+                                <td>
+                                    @foreach (var skill in item.Skills.Split(',').Take(3))
+                                    {
+                                        <span class="badge bg-light text-dark me-1">@skill.Trim()</span>
+                                    }
+                                    @if (item.Skills.Split(',').Length > 3)
+                                    {
+                                        <span class="badge bg-secondary">+@(item.Skills.Split(',').Length - 3)</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.EmployementType == "Full-time")
+                                    {
+                                        <span class="badge bg-success">@item.EmployementType</span>
+                                    }
+                                    else if (item.EmployementType == "Part-time")
+                                    {
+                                        <span class="badge bg-warning text-dark">@item.EmployementType</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">@item.EmployementType</span>
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        var currencySymbol = "";
+                                        switch (item.Currency)
+                                        {
+                                            case "USD":
+                                                currencySymbol = "$";
+                                                break;
+                                            case "GBP":
+                                                currencySymbol = "£";
+                                                break;
+                                            case "EUR":
+                                                currencySymbol = "€";
+                                                break;
+                                            case "ETB":
+                                                currencySymbol = "Br";
+                                                break;
+                                            case "JPY":
+                                                currencySymbol = "¥";
+                                                break;
+                                            default:
+                                                currencySymbol = item.Currency;
+                                                break;
+                                        }
+                                    }
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-1">@currencySymbol</span>
+                                        <span>@item.Salary.ToString("N2")</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-2" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info me-2" title="Details">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
+@section Styles {
+    <style>
+        .avatar-sm {
+            width: 36px;
+            height: 36px;
+            font-size: 0.875rem;
+        }
+
+        .avatar-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .progress {
+            width: 80px;
+            margin-bottom: 5px;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        .badge {
+            font-weight: 500;
+        }
+    </style>
+}
+
 @section Scripts {
     <script src="https://kit.fontawesome.com/YOUR-FONT-AWESOME-KIT.js" crossorigin="anonymous"></script>
+    <script>
+        // Simple search functionality
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const searchValue = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#employeeTable tbody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchValue) ? '' : 'none';
+            });
+        });
+
+        // Filter button functionality (would need more implementation)
+        document.getElementById('filterBtn').addEventListener('click', function() {
+            alert('Filter functionality would be implemented here');
+            // This would typically open a modal with filter options
+        });
+    </script>
 }

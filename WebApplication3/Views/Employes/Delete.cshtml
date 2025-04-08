@@ -19,41 +19,100 @@
                     <hr />
                     <dl class="row">
                         <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.FirstName)
+                            @Html.DisplayNameFor(model => model.FullName)
                         </dt>
                         <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.FirstName)
+                            @Html.DisplayFor(model => model.FullName)
                         </dd>
+
                         <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.MiddleName)
+                            @Html.DisplayNameFor(model => model.Age)
                         </dt>
                         <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.MiddleName)
+                            @Html.DisplayFor(model => model.Age)
                         </dd>
+
                         <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.LastName)
+                            @Html.DisplayNameFor(model => model.Experience)
                         </dt>
                         <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.LastName)
+                            @Html.DisplayFor(model => model.Experience)
                         </dd>
-                        
+
                         <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.Email)
+                            @Html.DisplayNameFor(model => model.DateOfRegistration)
                         </dt>
                         <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.Email)
+                            @Html.DisplayFor(model => model.DateOfRegistration)
                         </dd>
+
                         <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                            @Html.DisplayNameFor(model => model.Education)
                         </dt>
                         <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.PhoneNumber)
+                            @Html.DisplayFor(model => model.Education)
                         </dd>
+
                         <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.Country)
+                            @Html.DisplayNameFor(model => model.Skills)
                         </dt>
                         <dd class="col-sm-8">
-                            @Html.DisplayFor(model => model.Country)
+                            @Html.DisplayFor(model => model.Skills)
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Gender)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Gender)
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.EmployementType)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.EmployementType)
+                        </dd>
+
+                        <!-- Salary Information -->
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Salary)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @{
+                                var currencySymbol = "";
+                                switch (Model.Currency)
+                                {
+                                    case "USD":
+                                        currencySymbol = "$";
+                                        break;
+                                    case "GBP":
+                                        currencySymbol = "£";
+                                        break;
+                                    case "EUR":
+                                        currencySymbol = "€";
+                                        break;
+                                    case "ETB":
+                                        currencySymbol = "Br";
+                                        break;
+                                    case "JPY":
+                                        currencySymbol = "¥";
+                                        break;
+                                    default:
+                                        currencySymbol = Model.Currency;
+                                        break;
+                                }
+                            }
+                            @currencySymbol @Model.Salary.ToString("N2")
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Currency)
+                        </dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary">
+                                @Html.DisplayFor(model => model.Currency)
+                            </span>
                         </dd>
                     </dl>
                 </div>

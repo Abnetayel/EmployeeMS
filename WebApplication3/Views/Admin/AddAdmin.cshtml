@@ -3,79 +3,135 @@
     ViewData["Title"] = "Add New Admin";
 }
 
-<div class="container mt-4">
-    <h2>Add New Admin</h2>
-    <hr />
+<div class="container py-4">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-primary text-white py-3">
+            <h2 class="h5 mb-0">
+                <i class="fas fa-user-plus me-2"></i>Add New Administrator
+            </h2>
+        </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <form asp-action="AddAdmin">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="card-body p-4">
+            <form asp-action="AddAdmin" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-                <div class="role-selector mb-3">
-                    @* <label class="form-label fw-bold">Select Role:</label> *@
-                    <div class="d-flex flex-wrap mt-2">
-                        @* <div class="form-check role-option"> *@
-                        @*     <input class="form-check-input" type="radio" asp-for="Role" value="SuperAdmin" id="roleSuperAdmin"> *@
-                        @*     <label class="form-check-label" for="roleSuperAdmin"> *@
-                        @*         <i class="fas fa-crown text-warning"></i> Super Admin *@
-                        @*     </label> *@
-                        @* </div> *@
-                        <div class="form-check role-option">
-                            <input class="form-check-input" type="hidden" asp-for="Role" value="Admin" id="roleAdmin">
-                            <label class="form-check-label" for="roleAdmin">
-                                <i class="fas fa-user-shield text-primary"></i> Admin
-                            </label>
+                <!-- Role Selection (Hidden since it's fixed to Admin) -->
+                <div class="d-none">
+                    <input asp-for="Role" value="Admin" />
+                </div>
+
+                <!-- Form Sections -->
+                <div class="row g-3">
+                    <!-- Account Information -->
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input asp-for="UserName" class="form-control" placeholder=" " required />
+                            <label asp-for="UserName" class="form-label"></label>
+                            <span asp-validation-for="UserName" class="invalid-feedback"></span>
                         </div>
-                        @* <div class="form-check role-option"> *@
-                        @*     <input class="form-check-input" type="radio" asp-for="Role" value="User" id="roleUser" checked> *@
-                        @*     <label class="form-check-label" for="roleUser"> *@
-                        @*         <i class="fas fa-user text-success"></i> User *@
-                        @*     </label> *@
-                        @* </div> *@
                     </div>
-                    <span asp-validation-for="Role" class="text-danger"></span>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input asp-for="Email" type="email" class="form-control" placeholder=" " required />
+                            <label asp-for="Email" class="form-label"></label>
+                            <span asp-validation-for="Email" class="invalid-feedback"></span>
+                        </div>
+                    </div>
+
+                    <!-- Password Section -->
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 position-relative">
+                            <input asp-for="Password" type="password" class="form-control" placeholder=" " required
+                                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" />
+                            <label asp-for="Password" class="form-label"></label>
+                            <span asp-validation-for="Password" class="invalid-feedback"></span>
+                            <small class="form-text text-muted mt-1 d-block">
+                                <i class="fas fa-info-circle me-1"></i>Minimum 8 characters with uppercase, lowercase, and number
+                            </small>
+                            <button type="button" class="btn btn-sm btn-link position-absolute end-0 top-0 pt-3 pe-3 toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3 position-relative">
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder=" " required />
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <span asp-validation-for="ConfirmPassword" class="invalid-feedback"></span>
+                            <button type="button" class="btn btn-sm btn-link position-absolute end-0 top-0 pt-3 pe-3 toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-
-
-
-
-                <div class="form-group mb-3">
-                    <label asp-for="UserName" class="control-label"></label>
-                    <input asp-for="UserName" class="form-control" />
-                    <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label asp-for="Email" class="control-label"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label asp-for="Password" class="control-label"></label>
-                    <input asp-for="Password" type="password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label asp-for="ConfirmPassword" class="control-label"></label>
-                    <input asp-for="ConfirmPassword" type="password" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" value="Create Admin" class="btn btn-primary" />
-                    <a asp-action="SuperAdminDashboard" class="btn btn-secondary">Cancel</a>
+                <!-- Form Actions -->
+                <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                    <a asp-action="SuperAdminDashboard" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-save me-2"></i>Create Admin Account
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+@section Styles {
+    <style>
+        .form-floating > label {
+            padding: 1rem 1.25rem;
+        }
+
+        .toggle-password {
+            z-index: 5;
+            color: #6c757d;
+        }
+
+        .card {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+}
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        // Password visibility toggle
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.closest('.form-floating').querySelector('input');
+                const icon = this.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+        });
+
+        // Client-side validation enhancement
+        (function () {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 }
