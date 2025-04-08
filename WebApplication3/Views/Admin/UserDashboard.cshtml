@@ -1,0 +1,40 @@
+﻿@using WebApplication3.Models;
+@model List<Employe>
+@{
+    ViewData["Title"] = "User Dashboard";
+}
+
+<div class="container mt-4">
+    <h2>User Dashboard</h2>
+
+    <div class="mb-3">
+        <a asp-action="List" asp-controller="Employes" class="btn btn-primary">Employee List</a>
+    </div>
+
+    @* <h4>Employees</h4> *@
+    @* <table class="table table-striped"> *@
+    @*     <thead> *@
+    @*         <tr> *@
+    @*             <th>FirstName</th> *@
+    @*             <th>MiddleName</th> *@
+    @*             <th>LastName</th> *@
+    @*             <th>Email</th> *@
+    @*             <th>PhoneNumber</th> *@
+    @*             <th>Country</th> *@
+    @*         </tr> *@
+    @*     </thead> *@
+    @*     <tbody> *@
+    @*         @foreach (var emp in Model) *@
+    @*         { *@
+    @*             <tr> *@
+    @*                 <td>@emp.FirstName</td> *@
+    @*                 <td>@emp.MiddleName</td> *@
+    @*                 <td>@emp.LastName</td> *@
+    @*                 <td>@emp.Email</td> *@
+    @*                 <td>@emp.PhoneNumber</td> *@
+    @*                 <td>@emp.Country</td> *@
+    @*             </tr> *@
+    @*         } *@
+    @*     </tbody> *@
+    @* </table> *@
+</div>

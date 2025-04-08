@@ -32,7 +32,7 @@ namespace WebApplication3.Controllers
         {
             if (!ModelState.IsValid)
             {
-                
+
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 foreach (var error in errors)
                 {
@@ -52,21 +52,22 @@ namespace WebApplication3.Controllers
             }
             try
             {
-                
+
                 var passwordHasher = new PasswordHasher<User>();
                 User account = new User
                 {
                     Id = model.Id,
                     Email = model.Email,
-                    UserName = model.UserName
+                    UserName = model.UserName,
+                    Role=model.Role,
                 };
                 account.Password = passwordHasher.HashPassword(account, model.Password); // Hash the password
 
-                
+
                 _context.Users.Add(account);
                 _context.SaveChanges();
 
-                
+
                 ModelState.Clear();
 
 
@@ -80,10 +81,10 @@ namespace WebApplication3.Controllers
             {
                 Console.WriteLine(ex.InnerException?.Message);
 
-                
+
                 ModelState.AddModelError("", "An error occurred while saving. Please enter a unique Email and Username.");
 
-                return View(model); 
+                return View(model);
             }
         }
 
@@ -105,16 +106,23 @@ namespace WebApplication3.Controllers
                     var result = passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
                     if (result == PasswordVerificationResult.Success)
                     {
-                        //success
-                        var Claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim("Name", user.UserName),
-                        new Claim(ClaimTypes.Role, "user")
-                    };
-                        var ClaimIdentity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(ClaimIdentity));
-                        return RedirectToAction("Index", "Employes");
+                        var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim("Name", user.UserName),
+                    new Claim(ClaimTypes.Role, user.Role) 
+                };
+
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                        
+                        if (user.Role == "SuperAdmin")
+                            return RedirectToAction("SuperAdminDashboard", "Admin");
+                        else if (user.Role == "Admin")
+                            return RedirectToAction("AdminDashboard", "Admin");
+                        else
+                            return RedirectToAction("UserDashboard", "Admin");
                     }
                     else
                     {

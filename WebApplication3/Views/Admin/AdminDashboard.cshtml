@@ -1,0 +1,35 @@
+﻿@using WebApplication3.Data
+@model List<User>
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+    <h2>Admin Dashboard</h2>
+
+    <div class="mb-3">
+        <a asp-action="AddUser" class="btn btn-primary">Add New User</a>
+        <a asp-action="Index" asp-controller="Employes" class="btn btn-info">Add New Employee</a>
+    </div>
+
+    <h4>Users and Employees</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

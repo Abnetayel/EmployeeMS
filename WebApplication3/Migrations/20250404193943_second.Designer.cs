@@ -11,7 +11,7 @@ using WebApplication3.Data;
 namespace WebApplication3.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250402222137_second")]
+    [Migration("20250404193943_second")]
     partial class second
     {
         /// <inheritdoc />
@@ -41,6 +41,10 @@ namespace WebApplication3.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .IsRequired()

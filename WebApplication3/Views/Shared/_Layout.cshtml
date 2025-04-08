@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApplication3.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
 </head>
 <body>
     <header>
@@ -38,29 +39,30 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <span class="nav-link text-white">
-                                    Welcome, @User.FindFirst("Name")?.Value
-                                </span>
+                                @if (User.IsInRole("SuperAdmin"))
+                                {
+                                    <a class="nav-link" asp-controller="Admin" asp-action="SuperAdminDashboard">SuperAdmin Dashboard</a>
+                                }
+                                else if (User.IsInRole("Admin"))
+                                {
+                                    <a class="nav-link" asp-controller="Admin" asp-action="AdminDashboard">Admin Dashboard</a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link" asp-controller="Admin" asp-action="UserDashboard">User Dashboard</a>
+                                }
                             </li>
                             <li class="nav-item">
-                                <form asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
-                                    <button type="submit" class="btn btn-link nav-link text-white">
-                                        <i class="fas fa-sign-out-alt"></i> Logout
-                                    </button>
-                                </form>
+                                <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a asp-controller="Account" asp-action="Login" class="nav-link text-white">
-                                    <i class="fas fa-sign-in-alt"></i> Login
-                                </a>
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a asp-controller="Account" asp-action="Registation" class="nav-link text-white">
-                                    <i class="fas fa-user-plus"></i> Register
-                                </a>
+                                <a class="nav-link" asp-controller="Account" asp-action="Registation">Register</a>
                             </li>
                         }
                     </ul>
@@ -79,6 +81,7 @@
         <div class="container text-center">
             &copy; 2025 - Employee Management
         </div>
+
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

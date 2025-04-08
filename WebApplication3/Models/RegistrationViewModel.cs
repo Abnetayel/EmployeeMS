@@ -10,7 +10,7 @@ namespace WebApplication3.Models
         public string UserName { get; set; }
         [Required(ErrorMessage = "Emial is required")]
         [MaxLength(50)]
-        [EmailAddress(ErrorMessage ="please inter the valid email")]
+        [EmailAddress(ErrorMessage = "please inter the valid email")]
         //[RegularExpression(@"")]
         //[DataType(DataType.EmailAddress)]
         public string Email { get; set; }
@@ -18,8 +18,9 @@ namespace WebApplication3.Models
         [MaxLength(20)]
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
-        [Compare("Password",ErrorMessage ="Please confirm your password")]
+        [Compare("Password", ErrorMessage = "Please confirm your password")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
-    } 
+        public string Role { get; set; }
+    }
 }
