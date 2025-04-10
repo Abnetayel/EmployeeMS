@@ -1,0 +1,302 @@
+﻿{
+  "Scenario": "Regression",
+  "DataSource": {
+    "Version": 3,
+    "EscapeCharacter": "\"",
+    "ReadMultiLines": false,
+    "KeepDiacritics": false,
+    "KeepPunctuations": false,
+    "AllowQuoting": false,
+    "Type": "TabularFile",
+    "FilePath": "C:\\Users\\abn\\source\\repos\\WebApplication3\\WebApplication3\\model11.txt",
+    "Delimiter": ",",
+    "DecimalMarker": ".",
+    "HasHeader": true,
+    "ColumnProperties": [
+      {
+        "ColumnName": "Id",
+        "ColumnPurpose": "Ignore",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Age",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Experience",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Education",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Skills",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Gender",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "EmployementType",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Country",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Salary",
+        "ColumnPurpose": "Label",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      }
+    ]
+  },
+  "Environment": {
+    "Type": "LocalCPU",
+    "Version": 1
+  },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "LbfgsPoissonRegressionRegression",
+        "Score": 0.95310920474603589,
+        "RuntimeInSeconds": 0.684,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e7",
+          "e0": {
+            "OutputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
+            ],
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Age",
+              "Experience"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Skills",
+            "OutputColumnName": "Skills"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country",
+              "Age",
+              "Experience",
+              "Skills"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e7": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.62054329463829128,
+        "RuntimeInSeconds": 1.027,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e5",
+          "e0": {
+            "OutputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
+            ],
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Age",
+              "Experience"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Skills",
+            "OutputColumnName": "Skills"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country",
+              "Age",
+              "Experience",
+              "Skills"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastTreeRegression",
+        "Score": -5.453137812753214,
+        "RuntimeInSeconds": 0.634,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4",
+          "e0": {
+            "OutputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
+            ],
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Age",
+              "Experience"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Skills",
+            "OutputColumnName": "Skills"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country",
+              "Age",
+              "Experience",
+              "Skills"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "NumberOfTrees": 4,
+            "MaximumBinCountPerFeature": 254,
+            "FeatureFraction": 1.0,
+            "LearningRate": 0.099999999999999978,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features",
+            "DiskTranspose": false
+          }
+        }
+      }
+    ],
+    "Estimators": {
+      "e0": "OneHotEncoding",
+      "e1": "ReplaceMissingValues",
+      "e2": "FeaturizeText",
+      "e3": "Concatenate",
+      "e4": "FastTreeRegression",
+      "e5": "FastForestRegression",
+      "e6": "LightGbmRegression",
+      "e7": "LbfgsPoissonRegressionRegression",
+      "e8": "SdcaRegression"
+    },
+    "Schema": "e0 * e1 * e2 * e3 * (e4 + e5 + e6 + e7 + e8)",
+    "MetricName": "RSquared",
+    "ModelFilePath": "C:\\Users\\abn\\source\\repos\\WebApplication3\\WebApplication3\\MLModel3.mlnet"
+  },
+  "Type": "TrainingConfig",
+  "Version": 5,
+  "TrainingOption": {
+    "Version": 2,
+    "Subsampling": false,
+    "Type": "RegressionTrainingOption",
+    "TrainingTime": 10,
+    "LabelColumn": "Salary",
+    "ValidationOption": {
+      "Version": 0,
+      "Type": "CrossValidationValidationOption",
+      "NumberOfFolds": 5
+    }
+  }
+}

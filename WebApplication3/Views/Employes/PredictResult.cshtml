@@ -1,0 +1,89 @@
+﻿@model WebApplication3.Models.Employe
+@{
+    ViewData["Title"] = "Salary Prediction Result";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-chart-line"></i> @ViewData["Title"]</h4>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.PredictionResult != null)
+                    {
+                        <div class="alert alert-success">
+                            <h5 class="alert-heading">Predicted Salary</h5>
+                            <p class="h3">@(((decimal)ViewBag.PredictionResult).ToString("C"))</p>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5>Input Details:</h5>
+                            <dl class="row">
+                                <dt class="col-sm-4">FullName</dt>
+                                <dd class="col-sm-8">@Model.FullName</dd>
+
+                                <dt class="col-sm-4">Age</dt>
+                                <dd class="col-sm-8">@Model.Age</dd>
+
+                                <dt class="col-sm-4">Experience</dt>
+                                <dd class="col-sm-8">@Model.Experience years</dd>
+
+                                <dt class="col-sm-4">Education</dt>
+                                <dd class="col-sm-8">@Model.Education</dd>
+
+                                <dt class="col-sm-4">Skills</dt>
+                                <dd class="col-sm-8">@Model.Skills</dd>
+
+                                <dt class="col-sm-4">Gender</dt>
+                                <dd class="col-sm-8">@Model.Gender</dd>
+
+                                <dt class="col-sm-4">Employment Type</dt>
+                                <dd class="col-sm-8">@Model.EmployementType</dd>
+
+                                <dt class="col-sm-4">Country</dt>
+                                <dd class="col-sm-8">@Model.Country</dd>
+
+                                <dt class="col-sm-4">DateOfRegistration</dt>
+                                <dd class="col-sm-8">@Model.DateOfRegistration</dd>
+
+                                <dt class="col-sm-4">Currency</dt>
+                                <dd class="col-sm-8">@Model.Currency</dd>
+
+                                <dt class="col-sm-4">PhoneNumber</dt>
+                                <dd class="col-sm-8">@Model.PhoneNumber</dd>
+                            </dl>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <h5 class="alert-heading">Prediction Failed</h5>
+                            <p>Unable to generate salary prediction. Please try again.</p>
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <a asp-action="Predict" class="btn btn-primary">
+                            <i class="fas fa-redo"></i> Make Another Prediction
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        dt {
+            font-weight: 500;
+        }
+
+        dd {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+}

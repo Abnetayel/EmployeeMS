@@ -40,6 +40,8 @@ builder.Services.AddAuthorization(options =>
 // Configure DbContext with SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddIdentityCore<User>(options => { /* options if needed */ })
+//    .AddDefaultTokenProviders();
 
 // Add Identity services (optional - if you want to use Identity features)
 //builder.Services.AddIdentity<User, IdentityRole<int>>(options =>

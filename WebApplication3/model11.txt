@@ -1,0 +1,51 @@
+Id,Age,Experience,Education,Skills,Gender,EmployementType,Country,Salary
+1,28,3,Bachelor,Frontend,Male,Full-time,USA,65000
+2,32,7,Master,Backend,Female,Full-time,USA,95000
+3,24,1,HighSchool,Frontend,Male,Part-time,UK,32000
+4,35,10,PhD,Machine Learning,Female,Full-time,Canada,120000
+5,30,5,Bachelor,Backend,Male,Full-time,Germany,70000
+6,27,4,Bachelor,Frontend,Female,Full-time,USA,80000
+7,40,15,Master,DevOps,Male,Full-time,USA,110000
+8,22,0,HighSchool,Frontend,Female,Part-time,Australia,28000
+9,45,20,PhD,Machine Learning,Male,Full-time,USA,150000
+10,29,6,Bachelor,Backend,Female,Full-time,UK,75000
+11,33,8,Master,Fullstack,Male,Full-time,Canada,90000
+12,26,2,Bachelor,Frontend,Female,Full-time,USA,60000
+13,38,12,Master,DevOps,Male,Full-time,Germany,105000
+14,31,6,Bachelor,Backend,Female,Full-time,USA,85000
+15,42,17,PhD,Cloud,Male,Full-time,USA,130000
+16,25,3,Bachelor,Frontend,Female,Part-time,UK,45000
+17,36,11,Master,Fullstack,Male,Full-time,Canada,98000
+18,23,1,HighSchool,Frontend,Female,Part-time,Australia,30000
+19,47,22,PhD,Cloud,Male,Full-time,USA,160000
+20,34,9,Master,Mobile,Female,Full-time,USA,92000
+21,28,4,Bachelor,Backend,Male,Full-time,Germany,68000
+22,39,13,Master,Cloud,Female,Full-time,Canada,108000
+23,30,7,Bachelor,Fullstack,Male,Full-time,USA,78000
+24,44,18,PhD,Machine Learning,Female,Full-time,USA,140000
+25,27,5,Bachelor,Frontend,Male,Full-time,UK,72000
+26,37,12,Master,Mobile,Female,Full-time,Canada,102000
+27,26,3,Bachelor,Backend,Male,Full-time,USA,67000
+28,41,16,PhD,Machine Learning,Female,Full-time,Germany,125000
+29,29,6,Bachelor,Fullstack,Male,Full-time,USA,82000
+30,35,10,Master,DevOps,Female,Full-time,Canada,95000
+31,24,2,Bachelor,Frontend,Male,Part-time,UK,48000
+32,46,19,PhD,Machine Learning,Female,Full-time,USA,145000
+33,33,8,Bachelor,Backend,Male,Full-time,USA,88000
+34,38,13,Master,Mobile,Female,Full-time,Germany,107000
+35,31,7,Bachelor,Fullstack,Male,Full-time,Canada,79000
+36,43,17,PhD,Cloud,Female,Full-time,USA,135000
+37,28,5,Bachelor,Frontend,Male,Full-time,UK,70000
+38,36,11,Master,Backend,Female,Full-time,USA,99000
+39,25,4,Bachelor,Frontend,Male,Part-time,Australia,42000
+40,45,20,PhD,Machine Learning,Female,Full-time,Canada,155000
+41,32,9,Bachelor,Mobile,Male,Full-time,USA,86000
+42,39,14,Master,Machine Learning,Female,Full-time,Germany,112000
+43,30,8,Bachelor,Fullstack,Male,Full-time,USA,83000
+44,44,18,PhD,Cloud,Female,Full-time,USA,142000
+45,27,6,Bachelor,Frontend,Male,Part-time,UK,58000
+46,37,12,Master,DevOps,Female,Full-time,Canada,104000
+47,26,5,Bachelor,Backend,Male,Full-time,USA,69000
+48,42,16,PhD,Cloud,Female,Full-time,Germany,128000
+49,29,7,Bachelor,Fullstack,Male,Full-time,USA,81000
+50,38,14,Master,Backend,Female,Full-time,Canada,110000

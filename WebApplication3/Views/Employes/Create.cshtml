@@ -40,13 +40,13 @@
                             <label asp-for="Education" class="form-label">Education</label>
                             <select asp-for="Education" class="form-control">
                                 <option value="">-- Select Education --</option>
-                                <option value="High School">High School</option>
-                                <option value="Diploma in Computer Science">Diploma in Computer Science</option>
-                                <option value="Bachelor of Computer Science (BSc CS)">Bachelor of Computer Science (BSc CS)</option>
-                                <option value="Bachelor of Engineering (BE/BTech)">Bachelor of Engineering (BE/BTech)</option>
-                                <option value="Master of Computer Science (MSc CS)">Master of Computer Science (MSc CS)</option>
-                                <option value="Master of Technology (MTech)">Master of Technology (MTech)</option>
-                                <option value="Ph.D. in Computer Science">Ph.D. in Computer Science</option>
+                                <option value="HighSchool">High School</option>
+                                <option value="PhD">PhD</option>
+                                <option value="Bachelor">Bachelor</option>
+                                <option value="Master">Master</option>
+                                @* <option value="Master of Computer Science (MSc CS)">Master of Computer Science (MSc CS)</option> *@
+                                @* <option value="Master of Technology (MTech)">Master of Technology (MTech)</option> *@
+                                @* <option value="Ph.D. in Computer Science">Ph.D. in Computer Science</option> *@
                                 <option value="Other">Other (Specify)</option>
                             </select>
                             <span asp-validation-for="Education" class="text-danger"></span>
@@ -64,17 +64,17 @@
 
                                 <optgroup label="Specializations">
                                     <option value="Machine Learning">Machine Learning Engineer</option>
-                                    <option value="Data Science">Data Scientist</option>
+                                    @* <option value="Data Science">Data Scientist</option> *@
                                     <option value="DevOps">DevOps Engineer</option>
                                     <option value="Cloud">Cloud Architect</option>
                                 </optgroup>
 
-                                <optgroup label="Other Roles">
-                                    <option value="UI/UX Designer">UI/UX Designer</option>
-                                    <option value="QA Engineer">QA Engineer</option>
-                                    <option value="Database Admin">Database Administrator</option>
-                                    <option value="Technical Support">Technical Support</option>
-                                </optgroup>
+                                @* <optgroup label="Other Roles"> *@
+                                @*     <option value="UI/UX Designer">UI/UX Designer</option> *@
+                                @*     <option value="QA Engineer">QA Engineer</option> *@
+                                @*     <option value="Database Admin">Database Administrator</option> *@
+                                @*     <option value="Technical Support">Technical Support</option> *@
+                                @* </optgroup> *@
                             </select>
                             <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple options</small>
                             <span asp-validation-for="Skills" class="text-danger"></span>
@@ -83,7 +83,7 @@
                         <div class="mb-3">
                             <label asp-for="Gender" class="form-label">Gender</label>
                             <select asp-for="Gender" class="form-control">
-                                <option value="">Select Gender</option>
+                                @* @* <option value="">Select Gender</option> *@
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Other">Other</option>
@@ -102,11 +102,11 @@
                             </select>
                             <span asp-validation-for="EmployementType" class="text-danger"></span>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="Salary" class="form-label">Salary Amount</label>
-                            <input asp-for="Salary" class="form-control" type="number" step="0.01" />
-                            <span asp-validation-for="Salary" class="text-danger"></span>
-                        </div>
+                        @* <div class="mb-3"> *@
+                        @*     <label asp-for="Salary" class="form-label">Salary Amount</label>  *@
+                        @*    <input asp-for="Salary" class="form-control" type="number" step="0.01" />  *@
+                        @*     <span asp-validation-for="Salary" class="text-danger"></span>  *@
+                        @*  </div> *@
 
                         <div class="mb-3">
                             <label asp-for="Currency" class="form-label">Currency</label>
@@ -145,6 +145,9 @@
                             </button>
                             <a asp-action="Index" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left"></i> Back to List
+                            </a>
+                            <a asp-action="Predict" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> go to predict
                             </a>
                         </div>
                     </form>

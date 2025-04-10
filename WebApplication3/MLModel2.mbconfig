@@ -1,61 +1,22 @@
 ﻿{
   "Scenario": "Regression",
   "DataSource": {
-    "Type": "SQL",
-    "Version": 1,
+    "Version": 3,
+    "EscapeCharacter": "\"",
+    "ReadMultiLines": false,
+    "KeepDiacritics": false,
+    "KeepPunctuations": false,
+    "AllowQuoting": false,
+    "Type": "TabularFile",
+    "FilePath": "C:\\Users\\abn\\source\\repos\\WebApplication3\\WebApplication3\\model11.txt",
+    "Delimiter": ",",
+    "DecimalMarker": ".",
+    "HasHeader": true,
     "ColumnProperties": [
       {
         "ColumnName": "Id",
-        "ColumnPurpose": "Feature",
+        "ColumnPurpose": "Ignore",
         "ColumnDataFormat": "Single",
-        "IsCategorical": false,
-        "Type": "Column",
-        "Version": 5
-      },
-      {
-        "ColumnName": "FullName",
-        "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "String",
-        "IsCategorical": false,
-        "Type": "Column",
-        "Version": 5
-      },
-      {
-        "ColumnName": "Gender",
-        "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "String",
-        "IsCategorical": false,
-        "Type": "Column",
-        "Version": 5
-      },
-      {
-        "ColumnName": "Skills",
-        "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "String",
-        "IsCategorical": false,
-        "Type": "Column",
-        "Version": 5
-      },
-      {
-        "ColumnName": "EmployementType",
-        "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "String",
-        "IsCategorical": false,
-        "Type": "Column",
-        "Version": 5
-      },
-      {
-        "ColumnName": "PhoneNumber",
-        "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "String",
-        "IsCategorical": false,
-        "Type": "Column",
-        "Version": 5
-      },
-      {
-        "ColumnName": "Country",
-        "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "String",
         "IsCategorical": false,
         "Type": "Column",
         "Version": 5
@@ -69,22 +30,6 @@
         "Version": 5
       },
       {
-        "ColumnName": "DateOfRegistration",
-        "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "DateTime",
-        "IsCategorical": false,
-        "Type": "Column",
-        "Version": 5
-      },
-      {
-        "ColumnName": "Education",
-        "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "String",
-        "IsCategorical": false,
-        "Type": "Column",
-        "Version": 5
-      },
-      {
         "ColumnName": "Experience",
         "ColumnPurpose": "Feature",
         "ColumnDataFormat": "Single",
@@ -93,10 +38,42 @@
         "Version": 5
       },
       {
-        "ColumnName": "Currency",
+        "ColumnName": "Education",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Skills",
         "ColumnPurpose": "Feature",
         "ColumnDataFormat": "String",
         "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Gender",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "EmployementType",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "Country",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
         "Type": "Column",
         "Version": 5
       },
@@ -108,11 +85,7 @@
         "Type": "Column",
         "Version": 5
       }
-    ],
-    "ConnectionString": "Data Source=localhost;Initial Catalog=EmployeeDB;Integrated Security=True;Trust Server Certificate=True",
-    "DatabaseName": "EmployeeDB",
-    "SelectedTableDbo": "dbo",
-    "TableName": "Employee"
+    ]
   },
   "Environment": {
     "Type": "LocalCPU",
@@ -126,163 +99,113 @@
         "Version": 1,
         "Type": "Trial",
         "TrainerName": "FastForestRegression",
-        "Score": 0.0,
-        "RuntimeInSeconds": 1.246,
+        "Score": 0.62054329463829128,
+        "RuntimeInSeconds": 0.454,
         "Parameter": {
-          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e6 * e7 * e8 * e9 * e11",
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e5",
           "e0": {
             "OutputColumnNames": [
-              "Id",
-              "Age"
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
             ],
             "InputColumnNames": [
-              "Id",
-              "Age"
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
             ]
           },
           "e1": {
-            "InputColumnName": "FullName",
-            "OutputColumnName": "FullName"
-          },
-          "e11": {
-            "NumberOfTrees": 4,
-            "NumberOfLeaves": 4,
-            "FeatureFraction": 1.0,
-            "LabelColumnName": "Experience",
-            "FeatureColumnName": "Features"
+            "OutputColumnNames": [
+              "Age",
+              "Experience"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience"
+            ]
           },
           "e2": {
-            "InputColumnName": "Gender",
-            "OutputColumnName": "Gender"
-          },
-          "e3": {
             "InputColumnName": "Skills",
             "OutputColumnName": "Skills"
           },
-          "e4": {
-            "InputColumnName": "EmployementType",
-            "OutputColumnName": "EmployementType"
-          },
-          "e5": {
-            "InputColumnName": "PhoneNumber",
-            "OutputColumnName": "PhoneNumber"
-          },
-          "e6": {
-            "InputColumnName": "Country",
-            "OutputColumnName": "Country"
-          },
-          "e7": {
-            "InputColumnName": "Education",
-            "OutputColumnName": "Education"
-          },
-          "e8": {
-            "OutputColumnNames": [
-              "DateOfRegistration"
-            ],
+          "e3": {
             "InputColumnNames": [
-              "DateOfRegistration"
-            ],
-            "TargetType": "Single"
-          },
-          "e9": {
-            "InputColumnNames": [
-              "Id",
-              "Age",
-              "FullName",
-              "Gender",
-              "Skills",
-              "EmployementType",
-              "PhoneNumber",
-              "Country",
               "Education",
-              "DateOfRegistration"
+              "Gender",
+              "EmployementType",
+              "Country",
+              "Age",
+              "Experience",
+              "Skills"
             ],
             "OutputColumnName": "Features"
+          },
+          "e5": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features"
           }
         }
       },
       {
         "Version": 1,
         "Type": "Trial",
-        "TrainerName": "LightGbmRegression",
-        "Score": "NaN",
-        "RuntimeInSeconds": 0.924,
+        "TrainerName": "FastForestRegression",
+        "Score": 0.62054329463829128,
+        "RuntimeInSeconds": 0.305,
         "Parameter": {
-          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e6 * e7 * e8 * e9 * e12",
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e5",
           "e0": {
             "OutputColumnNames": [
-              "Id",
-              "Age"
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
             ],
             "InputColumnNames": [
-              "Id",
-              "Age"
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
             ]
           },
           "e1": {
-            "InputColumnName": "FullName",
-            "OutputColumnName": "FullName"
-          },
-          "e12": {
-            "NumberOfLeaves": 4,
-            "MinimumExampleCountPerLeaf": 20,
-            "LearningRate": 1.0,
-            "NumberOfTrees": 4,
-            "SubsampleFraction": 1.0,
-            "MaximumBinCountPerFeature": 254,
-            "FeatureFraction": 1.0,
-            "L1Regularization": 2E-10,
-            "L2Regularization": 1.0,
-            "LabelColumnName": "Experience",
-            "FeatureColumnName": "Features"
+            "OutputColumnNames": [
+              "Age",
+              "Experience"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience"
+            ]
           },
           "e2": {
-            "InputColumnName": "Gender",
-            "OutputColumnName": "Gender"
-          },
-          "e3": {
             "InputColumnName": "Skills",
             "OutputColumnName": "Skills"
           },
-          "e4": {
-            "InputColumnName": "EmployementType",
-            "OutputColumnName": "EmployementType"
-          },
-          "e5": {
-            "InputColumnName": "PhoneNumber",
-            "OutputColumnName": "PhoneNumber"
-          },
-          "e6": {
-            "InputColumnName": "Country",
-            "OutputColumnName": "Country"
-          },
-          "e7": {
-            "InputColumnName": "Education",
-            "OutputColumnName": "Education"
-          },
-          "e8": {
-            "OutputColumnNames": [
-              "DateOfRegistration"
-            ],
+          "e3": {
             "InputColumnNames": [
-              "DateOfRegistration"
-            ],
-            "TargetType": "Single"
-          },
-          "e9": {
-            "InputColumnNames": [
-              "Id",
-              "Age",
-              "FullName",
-              "Gender",
-              "Skills",
-              "EmployementType",
-              "PhoneNumber",
-              "Country",
               "Education",
-              "DateOfRegistration"
+              "Gender",
+              "EmployementType",
+              "Country",
+              "Age",
+              "Experience",
+              "Skills"
             ],
             "OutputColumnName": "Features"
+          },
+          "e5": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 6,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features"
           }
         }
       },
@@ -290,187 +213,76 @@
         "Version": 1,
         "Type": "Trial",
         "TrainerName": "FastTreeRegression",
-        "Score": "NaN",
-        "RuntimeInSeconds": 0.681,
+        "Score": -5.453137812753214,
+        "RuntimeInSeconds": 0.446,
         "Parameter": {
-          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e6 * e7 * e8 * e9 * e10",
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4",
           "e0": {
             "OutputColumnNames": [
-              "Id",
-              "Age"
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
             ],
             "InputColumnNames": [
-              "Id",
-              "Age"
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
             ]
           },
           "e1": {
-            "InputColumnName": "FullName",
-            "OutputColumnName": "FullName"
+            "OutputColumnNames": [
+              "Age",
+              "Experience"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience"
+            ]
           },
-          "e10": {
+          "e2": {
+            "InputColumnName": "Skills",
+            "OutputColumnName": "Skills"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country",
+              "Age",
+              "Experience",
+              "Skills"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
             "NumberOfLeaves": 4,
             "MinimumExampleCountPerLeaf": 20,
             "NumberOfTrees": 4,
             "MaximumBinCountPerFeature": 254,
             "FeatureFraction": 1.0,
             "LearningRate": 0.099999999999999978,
-            "LabelColumnName": "Experience",
+            "LabelColumnName": "Salary",
             "FeatureColumnName": "Features",
             "DiskTranspose": false
-          },
-          "e2": {
-            "InputColumnName": "Gender",
-            "OutputColumnName": "Gender"
-          },
-          "e3": {
-            "InputColumnName": "Skills",
-            "OutputColumnName": "Skills"
-          },
-          "e4": {
-            "InputColumnName": "EmployementType",
-            "OutputColumnName": "EmployementType"
-          },
-          "e5": {
-            "InputColumnName": "PhoneNumber",
-            "OutputColumnName": "PhoneNumber"
-          },
-          "e6": {
-            "InputColumnName": "Country",
-            "OutputColumnName": "Country"
-          },
-          "e7": {
-            "InputColumnName": "Education",
-            "OutputColumnName": "Education"
-          },
-          "e8": {
-            "OutputColumnNames": [
-              "DateOfRegistration"
-            ],
-            "InputColumnNames": [
-              "DateOfRegistration"
-            ],
-            "TargetType": "Single"
-          },
-          "e9": {
-            "InputColumnNames": [
-              "Id",
-              "Age",
-              "FullName",
-              "Gender",
-              "Skills",
-              "EmployementType",
-              "PhoneNumber",
-              "Country",
-              "Education",
-              "DateOfRegistration"
-            ],
-            "OutputColumnName": "Features"
-          }
-        }
-      },
-      {
-        "Version": 1,
-        "Type": "Trial",
-        "TrainerName": "FastTreeRegression",
-        "Score": "NaN",
-        "RuntimeInSeconds": 0.659,
-        "Parameter": {
-          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e6 * e7 * e8 * e9 * e10",
-          "e0": {
-            "OutputColumnNames": [
-              "Id",
-              "Age"
-            ],
-            "InputColumnNames": [
-              "Id",
-              "Age"
-            ]
-          },
-          "e1": {
-            "InputColumnName": "FullName",
-            "OutputColumnName": "FullName"
-          },
-          "e10": {
-            "NumberOfLeaves": 4,
-            "MinimumExampleCountPerLeaf": 15,
-            "NumberOfTrees": 5,
-            "MaximumBinCountPerFeature": 285,
-            "FeatureFraction": 0.99999999,
-            "LearningRate": 0.30002555055219809,
-            "LabelColumnName": "Experience",
-            "FeatureColumnName": "Features",
-            "DiskTranspose": false
-          },
-          "e2": {
-            "InputColumnName": "Gender",
-            "OutputColumnName": "Gender"
-          },
-          "e3": {
-            "InputColumnName": "Skills",
-            "OutputColumnName": "Skills"
-          },
-          "e4": {
-            "InputColumnName": "EmployementType",
-            "OutputColumnName": "EmployementType"
-          },
-          "e5": {
-            "InputColumnName": "PhoneNumber",
-            "OutputColumnName": "PhoneNumber"
-          },
-          "e6": {
-            "InputColumnName": "Country",
-            "OutputColumnName": "Country"
-          },
-          "e7": {
-            "InputColumnName": "Education",
-            "OutputColumnName": "Education"
-          },
-          "e8": {
-            "OutputColumnNames": [
-              "DateOfRegistration"
-            ],
-            "InputColumnNames": [
-              "DateOfRegistration"
-            ],
-            "TargetType": "Single"
-          },
-          "e9": {
-            "InputColumnNames": [
-              "Id",
-              "Age",
-              "FullName",
-              "Gender",
-              "Skills",
-              "EmployementType",
-              "PhoneNumber",
-              "Country",
-              "Education",
-              "DateOfRegistration"
-            ],
-            "OutputColumnName": "Features"
           }
         }
       }
     ],
     "Estimators": {
-      "e0": "ReplaceMissingValues",
-      "e1": "FeaturizeText",
+      "e0": "OneHotEncoding",
+      "e1": "ReplaceMissingValues",
       "e2": "FeaturizeText",
-      "e3": "FeaturizeText",
-      "e4": "FeaturizeText",
-      "e5": "FeaturizeText",
-      "e6": "FeaturizeText",
-      "e7": "FeaturizeText",
-      "e8": "ConvertType",
-      "e9": "Concatenate",
-      "e10": "FastTreeRegression",
-      "e11": "FastForestRegression",
-      "e12": "LightGbmRegression",
-      "e13": "LbfgsPoissonRegressionRegression",
-      "e14": "SdcaRegression"
+      "e3": "Concatenate",
+      "e4": "FastTreeRegression",
+      "e5": "FastForestRegression",
+      "e6": "LightGbmRegression",
+      "e7": "LbfgsPoissonRegressionRegression",
+      "e8": "SdcaRegression"
     },
-    "Schema": "e0 * e1 * e2 * e3 * e4 * e5 * e6 * e7 * e8 * e9 * (e10 + e11 + e12 + e13 + e14)",
+    "Schema": "e0 * e1 * e2 * e3 * (e4 + e5 + e6 + e7 + e8)",
     "MetricName": "RSquared",
     "ModelFilePath": "C:\\Users\\abn\\source\\repos\\WebApplication3\\WebApplication3\\MLModel2.mlnet"
   },
@@ -480,7 +292,7 @@
     "Version": 2,
     "Subsampling": false,
     "Type": "RegressionTrainingOption",
-    "TrainingTime": 60,
+    "TrainingTime": 10,
     "LabelColumn": "Salary",
     "ValidationOption": {
       "Version": 0,
