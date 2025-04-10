@@ -146,7 +146,7 @@ namespace WebApplication3.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Predict([Bind("Id,FullName,Age,Experience,DateOfRegistration,Education,Skills,EmployementType,Salary,Currency,Gender,PhoneNumber,Country")] Employe employe)
+        public IActionResult Predict([Bind("Id,Age,Experience,Education,Skills,EmployementType,Salary,Gender,PhoneNumber,Country")] Predict employe)
         //public IActionResult Predict(Employe employe)
         {
             if (ModelState.IsValid)
@@ -163,7 +163,7 @@ namespace WebApplication3.Controllers
             return View(employe);
         }
 
-        private decimal PredictSalary(Employe employe)
+        private decimal PredictSalary(Predict employe)
         {
             try
             {
@@ -188,7 +188,7 @@ namespace WebApplication3.Controllers
             }
         }
         [HttpGet]
-        public IActionResult PredictResult(Employe employe)
+        public IActionResult PredictResult(Predict employe)
         {
             if (employe == null || TempData["PredictionResult"] == null)
             {
