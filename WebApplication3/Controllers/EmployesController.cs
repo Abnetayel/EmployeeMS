@@ -52,10 +52,7 @@ namespace WebApplication3.Controllers
             var countries = Country.List.Select(c => new { c.Name }).ToList();
             ViewBag.Countries = new SelectList(countries, "Name", "Name");
 
-            //var countries = Country.List.Select(c => new { c.Name, c.TwoLetterCode }).ToList();
-            //ViewBag.Countries = countries;
-            //var countries = Country.List.Select(c => new { c.Name, c.TwoLetterCode }).ToList();
-            //ViewBag.Countries = new SelectList(countries, "TwoLetterCode", "Name");
+          
 
             return View();
         }
@@ -64,74 +61,166 @@ namespace WebApplication3.Controllers
         //To protect from overposting attacks, enable the specific properties you want to bind to.
         //For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 
-        //[HttpPost]
-        // [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> Create([Bind("Id,FullName,Age,Experience,DateOfRegistration,Education,Skills,EmployementType,Salary,Currency,Gender,PhoneNumber,Country")] Employe employe)
-        // {
-        //     if (ModelState.IsValid)
-        //     {
-        //         _context.Add(employe);
-        //         await _context.SaveChangesAsync();
-        //         return RedirectToAction(nameof(Index));
-        //     }
-        //     return View(employe);
-        // }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FullName,Age,Experience,DateOfRegistration,Education,Skills,EmployementType,Salary,Currency,Gender,PhoneNumber,Country")] Employe employe)
         {
             if (ModelState.IsValid)
             {
-                // Generate salary prediction before saving
-                var predictedSalary = await PredictSalaryAsync(employe);
-
-                // Store prediction information
-                employe.Salary = predictedSalary;
-                //employe.SalaryPredictionDate = DateTime.Now;
-                //employe.IsSalaryAdjusted = (predictedSalary != employe.Salary);
-
                 _context.Add(employe);
                 await _context.SaveChangesAsync();
-
-                TempData["PredictionInfo"] = $"System predicted: {predictedSalary:C} (Actual set: {employe.Salary:C})";
                 return RedirectToAction(nameof(Index));
             }
-
-            // Reload form data if validation fails
-            //await LoadFormData();
             return View(employe);
         }
 
-        private async Task<decimal> PredictSalaryAsync(Employe employe)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,FullName,Age,Experience,DateOfRegistration,Education,Skills,EmployementType,Salary,Currency,Gender,PhoneNumber,Country")] Employe employe)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //         If salary wasn't set, predict it
+        //        if (employe.Salary == 0)
+        //        {
+        //            employe.Salary = await PredictSalaryAsync(employe);
+        //            TempData["PredictionInfo"] = $"System predicted salary: {employe.Salary:C}";
+        //        }
+
+        //        _context.Add(employe);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //     Reload form data if validation fails
+        //    var countries = Country.List.Select(c => new { c.Name }).ToList();
+        //    ViewBag.Countries = new SelectList(countries, "Name", "Name");
+        //    return View(employe);
+        //}
+
+        [HttpPost]
+        public async Task<IActionResult> PredictSalary([FromBody] SalaryPredictionRequest request)
         {
             try
             {
-                var mlInput = new MLModel3.ModelInput()
+                // Input Validation
+                if (request.Age <= 18 || request.Age > 70)
                 {
-                    Age = (float)employe.Age,
-                    Experience = (float)employe.Experience,
-                    Education = employe.Education,
-                    Skills = employe.Skills,
-                    Gender = employe.Gender,
-                    EmployementType = employe.EmployementType,
-                    Country = employe.Country
-                };
+                    return BadRequest(new { success = false, message = "Age must be between 18 and 70." });
+                }
 
-                var prediction = MLModel3.Predict(mlInput);
-                return (decimal)prediction.Score;
+                if (request.Experience < 0 || request.Experience > 50)
+                {
+                    return BadRequest(new { success = false, message = "Experience must be between 0 and 50 years." });
+                }
+
+                if (string.IsNullOrWhiteSpace(request.Education) ||
+                    string.IsNullOrWhiteSpace(request.Skills) ||
+                    string.IsNullOrWhiteSpace(request.Gender) ||
+                    string.IsNullOrWhiteSpace(request.EmployementType) ||
+                    string.IsNullOrWhiteSpace(request.Country))
+                {
+                    return BadRequest(new { success = false, message = "All fields are required." });
+                }
+
+                // Try ML Prediction
+                try
+                {
+                    var mlInput = new MLModel3.ModelInput()
+                    {
+                        Age = (float)request.Age,
+                        Experience = (float)request.Experience,
+                        Education = request.Education,
+                        Skills = request.Skills,
+                        Gender = request.Gender,
+                        EmployementType = request.EmployementType,
+                        Country = request.Country
+                    };
+
+                    var prediction = MLModel3.Predict(mlInput);
+                    var predictedSalary = (decimal)prediction.Score;
+
+                    return Ok(new
+                    {
+                        success = true,
+                        predictedSalary = predictedSalary.ToString("N2"),
+                        method = "ML Prediction"
+                    });
+                }
+                catch (Exception mlEx)
+                {
+                    // Fallback to Database Average if ML fails
+                    try
+                    {
+                        var averageSalary = await _context.Employee
+                            .Where(e => e.Country == request.Country &&
+                                       e.Education == request.Education)
+                            .AverageAsync(e => e.Salary);
+
+                        return Ok(new
+                        {
+                            success = true,
+                            predictedSalary = averageSalary.ToString("N2"),
+                            method = "Database Fallback"
+                        });
+                    }
+                    catch (Exception dbEx)
+                    {
+                        return StatusCode(500, new
+                        {
+                            success = false,
+                            message = $"ML Prediction failed: {mlEx.Message}. Fallback also failed: {dbEx.Message}"
+                        });
+                    }
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                // Fallback to average salary calculation if prediction fails
-                return await _context.Employee
-                    .Where(e => e.Country == employe.Country &&
-                               e.Education == employe.Education &&
-                               e.Experience == employe.Experience)
-                    .AverageAsync(e => e.Salary);
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = $"Unexpected error: {ex.Message}"
+                });
             }
         }
 
+        public class SalaryPredictionRequest
+        {         
+            public int Age { get; set; }           
+            public int Experience { get; set; }          
+            public string Education { get; set; }           
+            public string Skills { get; set; }   
+            public string Gender { get; set; }          
+            public string EmployementType { get; set; }
+            public string Country { get; set; }
+        }
+        //private async Task<decimal> PredictSalaryAsync(Employe employe)
+        //{
+        //    try
+        //    {
+        //        var mlInput = new MLModel3.ModelInput()
+        //        {
+        //            Age = (float)employe.Age,
+        //            Experience = (float)employe.Experience,
+        //            Education = employe.Education,
+        //            Skills = employe.Skills,
+        //            Gender = employe.Gender,
+        //            EmployementType = employe.EmployementType,
+        //            Country = employe.Country
+        //        };
+
+        //        var prediction = MLModel3.Predict(mlInput);
+        //        return (decimal)prediction.Score;
+        //    }
+        //    catch
+        //    {
+        //        // Fallback to average salary calculation if prediction fails
+        //        return await _context.Employee
+        //            .Where(e => e.Country == employe.Country &&
+        //                      e.Education == employe.Education)
+        //            .AverageAsync(e => e.Salary);
+        //    }
+        //}
 
         [HttpGet]
         public IActionResult Predict()
@@ -141,9 +230,6 @@ namespace WebApplication3.Controllers
 
             return View();
         }
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Predict([Bind("Id,Age,Experience,Education,Skills,EmployementType,Salary,Gender,PhoneNumber,Country")] Predict employe)
@@ -162,7 +248,6 @@ namespace WebApplication3.Controllers
             // If validation fails, return to input form
             return View(employe);
         }
-
         private decimal PredictSalary(Predict employe)
         {
             try
@@ -187,6 +272,16 @@ namespace WebApplication3.Controllers
                 return (employe.Experience * 5000) + 30000; // Example formula
             }
         }
+
+
+
+
+
+
+
+
+
+
         [HttpGet]
         public IActionResult PredictResult(Predict employe)
         {

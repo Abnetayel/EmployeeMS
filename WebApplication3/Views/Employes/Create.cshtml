@@ -1,154 +1,204 @@
-﻿ @model WebApplication3.Models.Employe
+﻿@model WebApplication3.Models.Employe
 @{
     ViewData["Title"] = "Create Employee";
 }
-<div class="container mt-5">
+
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg p-3 mb-5 bg-white rounded">
-                <div class="card-header bg-success text-white">
-                    <h4 class="mb-0"><i class="fas fa-user-plus"></i> @ViewData["Title"]</h4>
+        <div class="col-lg-9">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-success text-white py-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-user-plus fa-lg me-3"></i>
+                        <h4 class="mb-0">@ViewData["Title"]</h4>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form asp-action="Create">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="mb-3">
-                            <label asp-for="FullName" class="form-label">Full Name</label>
-                            <input asp-for="FullName" class="form-control" />
-                            <span asp-validation-for="FullName" class="text-danger"></span>
+                <div class="card-body p-4">
+                    <form asp-action="Create" id="employeeForm" class="needs-validation" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <!-- Full Name -->
+                        <div class="mb-4">
+                            <label asp-for="FullName" class="form-label fw-bold">Full Name <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input asp-for="FullName" class="form-control form-control-lg" placeholder="Enter full name" required />
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Age" class="form-label">Age</label>
-                            <input asp-for="Age" class="form-control" type="number" />
-                            <span asp-validation-for="Age" class="text-danger"></span>
+                        <!-- Age and Experience Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="Age" class="form-label fw-bold">Age <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-birthday-cake"></i></span>
+                                    <input asp-for="Age" class="form-control" type="number" min="18" max="70" placeholder="Enter age" required />
+                                </div>
+                                <span asp-validation-for="Age" class="text-danger small"></span>
+                                <div class="form-text">Must be between 18-70 years</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Experience" class="form-label fw-bold">Experience (Years) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
+                                    <input asp-for="Experience" class="form-control" type="number" min="0" max="50" placeholder="Years of experience" required />
+                                </div>
+                                <span asp-validation-for="Experience" class="text-danger small"></span>
+                                <div class="form-text">Years of professional experience</div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Experience" class="form-label">Experience</label>
-                            <input asp-for="Experience" class="form-control" type="number" />
-                            <span asp-validation-for="Experience" class="text-danger"></span>
+                        <!-- Date of Registration -->
+                        <div class="mb-4">
+                            <label asp-for="DateOfRegistration" class="form-label fw-bold">Date of Registration <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                <input asp-for="DateOfRegistration" class="form-control" type="date" required />
+                            </div>
+                            <span asp-validation-for="DateOfRegistration" class="text-danger small"></span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="DateOfRegistration" class="form-label">Date of Registration</label>
-                            <input asp-for="DateOfRegistration" class="form-control" type="date" />
-                            <span asp-validation-for="DateOfRegistration" class="text-danger"></span>
+                        <!-- Education and Gender Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="Education" class="form-label fw-bold">Education Level <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-graduation-cap"></i></span>
+                                    <select asp-for="Education" class="form-select" required>
+                                        <option value="" selected disabled>-- Select Education --</option>
+                                        <option value="HighSchool">High School</option>
+                                        <option value="PhD">PhD</option>
+                                        <option value="Bachelor">Bachelor</option>
+                                        <option value="Master">Master</option>
+                                        <option value="Other">Other (Specify)</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="Education" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Gender" class="form-label fw-bold">Gender <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                    <select asp-for="Gender" class="form-select" required>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="Gender" class="text-danger small"></span>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Education" class="form-label">Education</label>
-                            <select asp-for="Education" class="form-control">
-                                <option value="">-- Select Education --</option>
-                                <option value="HighSchool">High School</option>
-                                <option value="PhD">PhD</option>
-                                <option value="Bachelor">Bachelor</option>
-                                <option value="Master">Master</option>
-                                @* <option value="Master of Computer Science (MSc CS)">Master of Computer Science (MSc CS)</option> *@
-                                @* <option value="Master of Technology (MTech)">Master of Technology (MTech)</option> *@
-                                @* <option value="Ph.D. in Computer Science">Ph.D. in Computer Science</option> *@
-                                <option value="Other">Other (Specify)</option>
-                            </select>
-                            <span asp-validation-for="Education" class="text-danger"></span>
+                        <!-- Skills -->
+                        <div class="mb-4">
+                            <label asp-for="Skills" class="form-label fw-bold">Primary Skill <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-code"></i></span>
+                                <select asp-for="Skills" class="form-select" required>
+                                    <optgroup label="Development Roles">
+                                        <option value="Frontend">Frontend Developer</option>
+                                        <option value="Backend">Backend Developer</option>
+                                        <option value="Fullstack">Fullstack Developer</option>
+                                        <option value="Mobile">Mobile Developer</option>
+                                    </optgroup>
+                                    <optgroup label="Specializations">
+                                        <option value="Machine Learning">Machine Learning Engineer</option>
+                                        <option value="DevOps">DevOps Engineer</option>
+                                        <option value="Cloud">Cloud Architect</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <span asp-validation-for="Skills" class="text-danger small"></span>
+                            <div class="form-text">Select your primary professional skill</div>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Skills" class="form-label">Skills</label>
-                            <select asp-for="Skills" class="form-select" multiple size="5">
-                                <optgroup label="Development Roles">
-                                    <option value="Frontend">Frontend Developer</option>
-                                    <option value="Backend">Backend Developer</option>
-                                    <option value="Fullstack">Fullstack Developer</option>
-                                    <option value="Mobile">Mobile Developer</option>
-                                </optgroup>
-
-                                <optgroup label="Specializations">
-                                    <option value="Machine Learning">Machine Learning Engineer</option>
-                                    @* <option value="Data Science">Data Scientist</option> *@
-                                    <option value="DevOps">DevOps Engineer</option>
-                                    <option value="Cloud">Cloud Architect</option>
-                                </optgroup>
-
-                                @* <optgroup label="Other Roles"> *@
-                                @*     <option value="UI/UX Designer">UI/UX Designer</option> *@
-                                @*     <option value="QA Engineer">QA Engineer</option> *@
-                                @*     <option value="Database Admin">Database Administrator</option> *@
-                                @*     <option value="Technical Support">Technical Support</option> *@
-                                @* </optgroup> *@
-                            </select>
-                            <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple options</small>
-                            <span asp-validation-for="Skills" class="text-danger"></span>
+                        <!-- Employment Type and Country Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="EmployementType" class="form-label fw-bold">Employment Type <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
+                                    <select asp-for="EmployementType" class="form-select" required>
+                                        <option value="" selected disabled>Select Employment Type</option>
+                                        <option value="Full-time">Full-time</option>
+                                        <option value="Part-time">Part-time</option>
+                                        <option value="Contract">Contract</option>
+                                        <option value="Freelance">Freelance</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="EmployementType" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Country" class="form-label fw-bold">Country <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-globe"></i></span>
+                                    <select asp-for="Country" asp-items="ViewBag.Countries" class="form-select" required>
+                                        <option value="" selected disabled>-- Select Country --</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="Country" class="text-danger small"></span>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Gender" class="form-label">Gender</label>
-                            <select asp-for="Gender" class="form-control">
-                                @* @* <option value="">Select Gender</option> *@
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        <!-- Phone Number and Currency Row -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="PhoneNumber" class="form-label fw-bold">Phone Number <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input asp-for="PhoneNumber" class="form-control" placeholder="Enter phone number" required />
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Currency" class="form-label fw-bold">Currency <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
+                                    <select asp-for="Currency" class="form-select" required>
+                                        <option value="USD">US Dollar ($)</option>
+                                        <option value="GBP">British Pound (£)</option>
+                                        <option value="EUR">Euro (€)</option>
+                                        <option value="ETB">Ethiopian Birr (Br)</option>
+                                        <option value="JPY">Japanese Yen (¥)</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="Currency" class="text-danger small"></span>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="EmployementType" class="form-label">Employment Type</label>
-                            <select asp-for="EmployementType" class="form-control">
-                                <option value="">Select Employment Type</option>
-                                <option value="Full-time">Full-time</option>
-                                <option value="Part-time">Part-time</option>
-                                <option value="Contract">Contract</option>
-                                <option value="Freelance">Freelance</option>
-                            </select>
-                            <span asp-validation-for="EmployementType" class="text-danger"></span>
-                        </div>
-                        @* <div class="mb-3"> *@
-                        @*     <label asp-for="Salary" class="form-label">Salary Amount</label>  *@
-                        @*    <input asp-for="Salary" class="form-control" type="number" step="0.01" />  *@
-                        @*     <span asp-validation-for="Salary" class="text-danger"></span>  *@
-                        @*  </div> *@
-
-                        <div class="mb-3">
-                            <label asp-for="Currency" class="form-label">Currency</label>
-                            <select asp-for="Currency" class="form-control">
-                                <option value="USD">US Dollar ($)</option>
-                                <option value="GBP">British Pound (£)</option>
-                                <option value="EUR">Euro (€)</option>
-                                <option value="ETB">Ethiopian Birr (Br)</option>
-                                <option value="JPY">Japanese Yen (¥)</option>
-                            </select>
-                            <span asp-validation-for="Currency" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                            <input asp-for="PhoneNumber" class="form-control" />
-                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                        </div>
-                        @* <div class="mb-3"> *@
-                        @*     <label asp-for="Country" class="form-label">Country</label> *@
-                        @*     <input asp-for="Country" class="form-control" /> *@
-                        @*     <span asp-validation-for="Country" class="text-danger"></span> *@
-                        @* </div> *@
-                        <div class="mb-3">
-                            <label asp-for="Country" class="form-label">Country</label>
-                           <select asp-for="Country" asp-items="ViewBag.Countries" class="form-control">
-    <option value="">-- Select Country --</option>
-</select>
-
-                            <span asp-validation-for="Country" class="text-danger"></span>
+                        <!-- Salary with Prediction -->
+                        <div class="mb-4">
+                            <label asp-for="Salary" class="form-label fw-bold">Salary Amount <span class="text-danger">*</span></label>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                <input asp-for="Salary" class="form-control" type="number" step="0.01" placeholder="Enter salary amount" id="salaryInput" required />
+                                <button type="button" class="btn btn-primary" id="predictSalaryBtn">
+                                    <i class="fas fa-calculator me-2"></i> Predict Salary
+                                </button>
+                            </div>
+                            @* <span asp-validation-for="Salary" class="text-danger small"></span> *@
+                            @* <div id="predictionInfo" class="alert alert-info mt-2 d-flex align-items-center" style="display: none!important;"> *@
+                            @*     <i class="fas fa-info-circle me-2"></i> *@
+                            @*     <span></span> *@
+                            @* </div> *@
+                            <span asp-validation-for="Salary" class="text-danger"></span>
+                            <div id="predictionInfo" class="text-info mt-2"></div>
                         </div>
 
-
-                        <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-plus-circle"></i> Add
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between mt-5">
+                            <button type="submit" class="btn btn-success btn-lg px-4">
+                                <i class="fas fa-plus-circle me-2"></i> Add Employee
                             </button>
-                            <a asp-action="Index" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Back to List
-                            </a>
-                            <a asp-action="Predict" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> go to predict
-                            </a>
+                            <div>
+                                <a asp-action="Index" class="btn btn-outline-secondary me-2">
+                                    <i class="fas fa-list me-2"></i> Back to List
+                                </a>
+                                <a asp-action="Predict" class="btn btn-outline-primary">
+                                    <i class="fas fa-chart-line me-2"></i> Go to Predict
+                                </a>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -161,4 +211,77 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+           $(document).ready(function() {
+            $('#predictSalaryBtn').click(function() {
+                // Clear previous messages
+                $('#predictionInfo').html('').removeClass('text-danger text-success');
+                $('.is-invalid').removeClass('is-invalid');
+
+                // Collect form data
+                var formData = {
+                    Age: $('#Age').val(),
+                    Experience: $('#Experience').val(),
+                    Education: $('#Education').val(),
+                    Skills: $('#Skills').val(),
+                    Gender: $('#Gender').val(),
+                    EmployementType: $('#EmployementType').val(),
+                    Country: $('#Country').val()
+                };
+
+                // Client-side validation
+                let isValid = true;
+                if (!formData.Age || formData.Age < 18 || formData.Age > 70) {
+                    $('#Age').addClass('is-invalid');
+                    isValid = false;
+                }
+                if (!formData.Experience || formData.Experience < 0 || formData.Experience > 50) {
+                    $('#Experience').addClass('is-invalid');
+                    isValid = false;
+                }
+                ['Education', 'Skills', 'Gender', 'EmployementType', 'Country'].forEach(field => {
+                    if (!formData[field]) {
+                        $(`#${field}`).addClass('is-invalid');
+                        isValid = false;
+                    }
+                });
+
+                if (!isValid) {
+                    $('#predictionInfo').html('Please correct the highlighted fields.').addClass('text-danger');
+                    return;
+                }
+
+                // Show loading
+                $('#predictionInfo').html('<i class="fas fa-spinner fa-spin"></i> Predicting salary...').addClass('text-info');
+
+                // Call prediction endpoint
+                $.ajax({
+                    url: '@Url.Action("PredictSalary", "Employes")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function(response) {
+                        if (response.success) {
+                            $('#predictionInfo').html(`Predicted salary (${response.method}): $${response.predictedSalary}`)
+                                                .addClass('text-success');
+
+                            if (confirm(`Use predicted salary: $${response.predictedSalary}?`)) {
+    document.getElementById('salaryInput').value = response.predictedSalary.replace(/[^0-9.]/g, '');
+}
+                        } else {
+                            $('#predictionInfo').html('Error: ' + response.message).addClass('text-danger');
+                        }
+                    },
+                    error: function(xhr) {
+                        let errorMessage = "Error predicting salary. Please try again.";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+                        $('#predictionInfo').html(errorMessage).addClass('text-danger');
+                    }
+                });
+            });
+        });
+    </script>
 }

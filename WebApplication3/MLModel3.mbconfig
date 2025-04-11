@@ -100,7 +100,7 @@
         "Type": "Trial",
         "TrainerName": "FastForestRegression",
         "Score": 0.62054329463829128,
-        "RuntimeInSeconds": 1.205,
+        "RuntimeInSeconds": 1.123,
         "Parameter": {
           "_SCHEMA_": "e0 * e1 * e2 * e3 * e5",
           "e0": {
@@ -149,6 +149,124 @@
             "FeatureFraction": 1.0,
             "LabelColumnName": "Salary",
             "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.62054329463829128,
+        "RuntimeInSeconds": 0.469,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e5",
+          "e0": {
+            "OutputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
+            ],
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Age",
+              "Experience"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Skills",
+            "OutputColumnName": "Skills"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country",
+              "Age",
+              "Experience",
+              "Skills"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 6,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastTreeRegression",
+        "Score": -5.453137812753214,
+        "RuntimeInSeconds": 0.498,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4",
+          "e0": {
+            "OutputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
+            ],
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Age",
+              "Experience"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Skills",
+            "OutputColumnName": "Skills"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "Education",
+              "Gender",
+              "EmployementType",
+              "Country",
+              "Age",
+              "Experience",
+              "Skills"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "NumberOfTrees": 4,
+            "MaximumBinCountPerFeature": 254,
+            "FeatureFraction": 1.0,
+            "LearningRate": 0.099999999999999978,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features",
+            "DiskTranspose": false
           }
         }
       }
