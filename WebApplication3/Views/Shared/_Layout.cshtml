@@ -7,87 +7,167 @@
     @RenderSection("Styles", required: false)
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    
     <link rel="stylesheet" href="~/WebApplication3.styles.css" asp-append-version="true" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container">
-                <h1 class="navbar-brand mb-0 text-white">
-                    <i class="fas fa-users"></i> Employee Management
-                </h1>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-primary border-end" id="sidebar-wrapper">
+            <div class="sidebar-heading text-white p-3">
+                <i class="fas fa-users me-2"></i>Menu
+            </div>
+            <div class="list-group list-group-flush">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @if (User.IsInRole("SuperAdmin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="superAdminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-tachometer-alt me-2"></i>SuperAdmin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="superAdminMenu">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="SuperAdminDashboard">
+                                        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                                    </a>
+                                </li>
+                                <li class="dropdown-divider"></li>
+                                <li class="dropdown-header">Quick Actions</li>
+                                <li>
+                                    <a class="dropdown-item" asp-action="AddAdmin" asp-controller="Admin">
+                                        <i class="fas fa-user-shield me-2"></i>Add Admin
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-action="AddUser" asp-controller="Admin">
+                                        <i class="fas fa-user-plus me-2"></i>Add User
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-action="Create" asp-controller="Employes">
+                                        <i class="fas fa-user-tie me-2"></i>Add Employee
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="AdminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-tachometer-alt me-2"></i>Admin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="AdminMenu">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="AdminDashboard">
+                                        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                                    </a>
+                                </li>
+                                <li class="dropdown-divider"></li>
+                                <li class="dropdown-header">Quick Actions</li>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @* <li class="nav-item"> *@
-                        @*     <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"> *@
-                        @*         <i class="fas fa-home"></i> Home *@
-                        @*     </a> *@
-                        @* </li> *@
-                        @* <li class="nav-item"> *@
-                        @*     <a class="nav-link text-white" asp-area="" asp-controller="Employes" asp-action="Index"> *@
-                        @*         <i class="fas fa-list"></i> Employees *@
-                        @*     </a> *@
-                        @* </li> *@
-                    </ul>
-                    <ul class="navbar-nav">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                @if (User.IsInRole("SuperAdmin"))
+                                <li>
+                                    <a class="dropdown-item" asp-action="AddUser" asp-controller="Admin">
+                                        <i class="fas fa-user-plus me-2"></i>Add User
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-action="Create" asp-controller="Employes">
+                                        <i class="fas fa-user-tie me-2"></i>Add Employee
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <a asp-controller="Admin" asp-action="UserDashboard" class="list-group-item list-group-item-action bg-primary text-white">
+                            <i class="fas fa-tachometer-alt me-2"></i>User Dashboard
+                        </a>
+                    }
+
+                    <!-- Common menu items for all roles -->
+                    <a href="#" class="list-group-item list-group-item-action bg-primary text-white">
+                        <i class="fas fa-user me-2"></i>Profile
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action bg-primary text-white">
+                        <i class="fas fa-cog me-2"></i>Settings
+                    </a>
+                }
+            </div>
+        </div>
+
+        <!-- Page content -->
+        <div id="page-content-wrapper">
+            <header>
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <div class="container-fluid">
+                        <button class="btn btn-primary" id="sidebarToggle">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <h1 class="navbar-brand mb-0 text-white ms-2">
+                            <i class="fas fa-users"></i> Employee Management
+                        </h1>
+
+                        <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto">
+                                @if (User.Identity.IsAuthenticated)
                                 {
-                                    <a class="nav-link" asp-controller="Admin" asp-action="SuperAdminDashboard">SuperAdmin Dashboard</a>
-                                }
-                                else if (User.IsInRole("Admin"))
-                                {
-                                    <a class="nav-link" asp-controller="Admin" asp-action="AdminDashboard">Admin Dashboard</a>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-user-circle me-1"></i> @User.Identity.Name
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                                        </ul>
+                                    </li>
                                 }
                                 else
                                 {
-                                    <a class="nav-link" asp-controller="Admin" asp-action="UserDashboard">User Dashboard</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" asp-controller="Account" asp-action="Login">Login</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" asp-controller="Account" asp-action="Registation">Register</a>
+                                    </li>
                                 }
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Account" asp-action="Registation">Register</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <div class="container-fluid px-4 py-4">
+                <main role="main">
+                    @RenderBody()
+                </main>
             </div>
-        </nav>
-    </header>
 
-    <div class="container py-4">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="footer text-muted bg-light py-3">
-        <div class="container text-center">
-            &copy; 2025 - Employee Management
+            <footer class="footer text-muted bg-light py-3">
+                <div class="container-fluid text-center">
+                    &copy; 2025 - Employee Management
+                </div>
+            </footer>
         </div>
-
-    </footer>
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const wrapper = document.getElementById('wrapper');
+
+            sidebarToggle.addEventListener('click', function() {
+                wrapper.classList.toggle('toggled');
+            });
+        });
+    </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

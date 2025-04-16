@@ -31,10 +31,6 @@ namespace WebApplication3
             [ColumnName(@"Skills")]
             public string Skills { get; set; }
 
-            [LoadColumn(5)]
-            [ColumnName(@"Gender")]
-            public string Gender { get; set; }
-
             [LoadColumn(6)]
             [ColumnName(@"EmployementType")]
             public string EmployementType { get; set; }
@@ -68,9 +64,6 @@ namespace WebApplication3
 
             [ColumnName(@"Skills")]
             public float[] Skills { get; set; }
-
-            [ColumnName(@"Gender")]
-            public float[] Gender { get; set; }
 
             [ColumnName(@"EmployementType")]
             public float[] EmployementType { get; set; }

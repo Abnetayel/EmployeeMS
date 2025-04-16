@@ -21,6 +21,11 @@ namespace WebApplication3.Data
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.UserName)
                 .IsUnique();
+            modelBuilder.Entity<Employe>()
+       .HasOne(e => e.Manager)
+       .WithMany(u => u.ManagedEmployees)
+       .HasForeignKey(e => e.ManagerId)
+       .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

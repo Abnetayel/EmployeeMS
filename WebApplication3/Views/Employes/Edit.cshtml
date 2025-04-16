@@ -142,6 +142,21 @@
                             <span asp-validation-for="Country" class="text-danger"></span>
                         </div>
 
+                        <!-- Manager Assignment -->
+                        <div class="mb-4">
+                            <label asp-for="ManagerId" class="form-label fw-bold">Assign Manager</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user-shield"></i></span>
+                                <select asp-for="ManagerId" asp-items="ViewBag.Users" class="form-select">
+                                    <option value="">-- Auto-assign to me (current user) --</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="ManagerId" class="text-danger small"></span>
+                            <div class="form-text">Leave blank to assign to yourself</div>
+                        </div>
+
+
+
                         <div class="d-flex justify-content-between">
                             <button type="submit" class="btn btn-success">
                                 <i class="fas fa-save"></i> Save Changes

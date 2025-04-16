@@ -1,4 +1,5 @@
-﻿using ISO3166;
+﻿using System.Security.Claims;
+using ISO3166;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -51,22 +52,31 @@ namespace WebApplication3.Controllers
         {
             var countries = Country.List.Select(c => new { c.Name }).ToList();
             ViewBag.Countries = new SelectList(countries, "Name", "Name");
-
-          
-
+            var users = _context.Users
+                    .Where(u => u.Role == "User")
+                    .Select(u => new {
+                        u.Id,
+                        DisplayName = $"{u.UserName} ({u.Email})"
+                    })
+                    .ToList();
+            
+            ViewBag.Users = new SelectList(users, "Id", "DisplayName");
             return View();
         }
 
-        //POST: Employes/Create
-        //To protect from overposting attacks, enable the specific properties you want to bind to.
-        //For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FullName,Age,Experience,DateOfRegistration,Education,Skills,EmployementType,Salary,Currency,Gender,PhoneNumber,Country")] Employe employe)
+        public async Task<IActionResult> Create([Bind("Id,FullName,Age,Experience,DateOfRegistration,Education,Skills,EmployementType,Salary,Currency,Gender,PhoneNumber,Country,ManagerId")] Employe employe)
         {
             if (ModelState.IsValid)
             {
+                
+                if (employe.ManagerId == null || employe.ManagerId == 0)
+                {
+                    var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    employe.ManagerId = currentUserId;
+                }
+
                 _context.Add(employe);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -74,29 +84,7 @@ namespace WebApplication3.Controllers
             return View(employe);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,FullName,Age,Experience,DateOfRegistration,Education,Skills,EmployementType,Salary,Currency,Gender,PhoneNumber,Country")] Employe employe)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //         If salary wasn't set, predict it
-        //        if (employe.Salary == 0)
-        //        {
-        //            employe.Salary = await PredictSalaryAsync(employe);
-        //            TempData["PredictionInfo"] = $"System predicted salary: {employe.Salary:C}";
-        //        }
 
-        //        _context.Add(employe);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //     Reload form data if validation fails
-        //    var countries = Country.List.Select(c => new { c.Name }).ToList();
-        //    ViewBag.Countries = new SelectList(countries, "Name", "Name");
-        //    return View(employe);
-        //}
 
         [HttpPost]
         public async Task<IActionResult> PredictSalary([FromBody] SalaryPredictionRequest request)
@@ -116,7 +104,7 @@ namespace WebApplication3.Controllers
 
                 if (string.IsNullOrWhiteSpace(request.Education) ||
                     string.IsNullOrWhiteSpace(request.Skills) ||
-                    string.IsNullOrWhiteSpace(request.Gender) ||
+                    //string.IsNullOrWhiteSpace(request.Gender) ||
                     string.IsNullOrWhiteSpace(request.EmployementType) ||
                     string.IsNullOrWhiteSpace(request.Country))
                 {
@@ -132,7 +120,7 @@ namespace WebApplication3.Controllers
                         Experience = (float)request.Experience,
                         Education = request.Education,
                         Skills = request.Skills,
-                        Gender = request.Gender,
+                        //Gender = request.Gender,
                         EmployementType = request.EmployementType,
                         Country = request.Country
                     };
@@ -190,7 +178,7 @@ namespace WebApplication3.Controllers
             public int Experience { get; set; }          
             public string Education { get; set; }           
             public string Skills { get; set; }   
-            public string Gender { get; set; }          
+            //public string Gender { get; set; }
             public string EmployementType { get; set; }
             public string Country { get; set; }
         }
@@ -258,8 +246,8 @@ namespace WebApplication3.Controllers
                     Experience = (float)employe.Experience,
                     Education = employe.Education,
                     Skills = employe.Skills,
-                    Gender = employe.Gender,
-                    EmployementType = employe.EmployementType,
+                    //Gender = employe.Gender,
+                    EmployementType =employe.EmployementType,
                     Country = employe.Country
                 };
 
@@ -318,6 +306,16 @@ namespace WebApplication3.Controllers
             var countries = Country.List.Select(c => new { c.Name }).ToList();
             ViewBag.Countries = new SelectList(countries, "Name", "Name");
 
+            var users = _context.Users
+                   .Where(u => u.Role == "User")
+                   .Select(u => new {
+                       u.Id,
+                       DisplayName = $"{u.UserName} ({u.Email})"
+                   })
+                   .ToList();
+
+            ViewBag.Users = new SelectList(users, "Id", "DisplayName");
+
             //var countries = Country.List.Select(c => new { c.Name, c.TwoLetterCode }).ToList();
             //ViewBag.Countries = countries;
             //var countries = Country.List.Select(c => new { c.Name, c.TwoLetterCode }).ToList();
@@ -331,7 +329,7 @@ namespace WebApplication3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Age,Experience,DateOfRegistration,Education,Skills,EmployementType,Salary,Currency,Gender,PhoneNumber,Country")] Employe employe)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Age,Experience,DateOfRegistration,Education,Skills,EmployementType,Salary,Currency,Gender,PhoneNumber,Country,ManagerId")] Employe employe)
         {
             if (id != employe.Id)
             {

@@ -1,13 +1,43 @@
-﻿@using WebApplication3.Models;
-@model List<Employe>
-@{
-    ViewData["Title"] = "User Dashboard";
-}
+﻿@model IEnumerable<WebApplication3.Models.Employe>
 
-<div class="container mt-4">
-    <h2>User Dashboard</h2>
-
-    <div class="mb-3">
-        <a asp-action="List" asp-controller="Employes" class="btn btn-primary">Employee List</a>
-    </div>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">My Members</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Experience</th>
+                <th>Education</th>
+                <th>Skills</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                foreach (var employee in Model)
+                {
+                    <tr>
+                        <td>@employee.Id</td>
+                        <td>@employee.FullName</td>
+                        <td>@employee.Age</td>
+                        <td>@employee.Experience</td>
+                        <td>@employee.Education</td>
+                        <td>@employee.Skills</td>
+                        <td>
+                            <a asp-action="DetailUser" asp-route-id="@employee.Id" class="btn btn-info btn-sm">Details</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">No members found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

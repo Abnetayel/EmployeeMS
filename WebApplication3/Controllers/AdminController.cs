@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using WebApplication3.Models;
@@ -31,11 +32,26 @@ public class AdminController : Controller
         var users = _context.Users.Where(u => u.Role != "SuperAdmin").ToList();
         return View(users);
     }
-
+    [HttpGet]
     [Authorize(Policy = "User")]
     public IActionResult UserDashboard()
     {
-        var employees = _context.Employee.ToList();
+        
+        var loggedInUserName = User.Identity?.Name;
+
+        // Find the logged-in user
+        var loggedInUser = _context.Users.FirstOrDefault(u => u.UserName == loggedInUserName);
+
+        if (loggedInUser == null)
+        {
+            return Unauthorized();
+        }
+
+        
+        var employees = _context.Employee
+            .Where(e => e.ManagerId == loggedInUser.Id)
+            .ToList();
+
         return View(employees);
     }
 
@@ -104,34 +120,6 @@ public class AdminController : Controller
     }
 
 
-    //[HttpPost]
-    //[Authorize(Policy = "SuperAdminOnly")]
-    //public async Task<IActionResult> UpdateRole(int userId, string newRole)
-    //{
-    //    var user = await _context.Users.FindAsync(userId);
-    //    if (user == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    // Prevent self-demotion
-    //    var currentUser = await _context.Users
-    //        .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
-
-    //    if (currentUser != null && newRole != "SuperAdmin" )
-    //        //&& newRole == "SuperAdmin")
-    //    {
-    //        TempData["ErrorMessage"] = "You cannot remove your own Super Admin role.";
-    //        return RedirectToAction("SuperAdminDashboard");
-    //    }
-
-    //    user.Role = newRole;
-    //    await _context.SaveChangesAsync();
-
-    //    TempData["SuccessMessage"] = "Role updated successfully";
-    //    return RedirectToAction("SuperAdminDashboard");
-    //}
-
     [HttpGet]
     [Authorize(Policy = "SuperAdminOnly")]
     public async Task<IActionResult> EditUser(int? id)
@@ -181,7 +169,63 @@ public class AdminController : Controller
         return View(user);
     }
 
+    [HttpPost]
+    [Authorize(Policy = "AdminOrHigher")]
+    public async Task<IActionResult> AssignEmployeesToUser(int userId, List<int> employeeIds)
+    {
+        var user = await _context.Users.Include(u => u.ManagedEmployees).FirstOrDefaultAsync(u => u.Id == userId);
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
 
+        var employees = await _context.Employee.Where(e => employeeIds.Contains(e.Id)).ToListAsync();
+        foreach (var employee in employees)
+        {
+            employee.ManagerId = userId;
+        }
+
+        await _context.SaveChangesAsync();
+        TempData["SuccessMessage"] = "Employees assigned successfully.";
+        return RedirectToAction("AdminDashboard");
+    }
+
+    //[HttpGet]
+    //[Authorize(Policy = "AdminOrHigher")]
+    //public IActionResult AssignEmployees()
+    //{
+    //    var users = _context.Users.Select(u => new { u.Id, u.UserName }).ToList();
+    //    var employees = _context.Employee.Select(e => new { e.Id, e.FullName }).ToList();
+
+    //    var model = new AssignEmployeesViewModel
+    //    {
+    //        Users = new SelectList(users, "Id", "UserName"),
+    //        Employees = new SelectList(employees, "Id", "FullName")
+    //    };
+
+    //    return View(model);
+    //}
+
+    [HttpGet]
+    [Authorize(Policy = "AdminOrHigher")]
+    public IActionResult AssignEmployees()
+    {
+        var users = _context.Users.Select(u => new { u.Id, u.UserName }).ToList();
+
+        
+        var unassignedEmployees = _context.Employee
+            .Where(e => e.ManagerId == null)  
+            .Select(e => new { e.Id, e.FullName })
+            .ToList();
+
+        var model = new AssignEmployeesViewModel
+        {
+            Users = new SelectList(users, "Id", "UserName"),
+            Employees = new SelectList(unassignedEmployees, "Id", "FullName")
+        };
+
+        return View(model);
+    }
     [Authorize(Policy = "AdminOrHigher")]
     public async Task<IActionResult> DetailUser(int? id)
     {
@@ -214,6 +258,7 @@ public class AdminController : Controller
         return RedirectToAction("SuperAdminDashboard");
 
     }
+
     //[HttpPost]
     //[Authorize(Policy = "SuperAdminOnly")]
     //public async Task<IActionResult> EditUser(User model)
@@ -299,17 +344,17 @@ public class AdminController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditUser(
-     int id,
-     [Bind("Id,UserName,Email,Role")] EditUserModel user,  
-     //string Password,
-     String Role)  
+    public async Task<IActionResult> EditUser(EditUserModel user)
+     //int id,
+     //[Bind("Id,UserName,Email,Role")] EditUserModel user,  
+     ////string Password,
+     //String Role)  
     {
-        if (id != user.Id)
-        {
-            TempData["ErrorMessage"] = "ID mismatch";
-            return RedirectToAction("SuperAdminDashboard");
-        }
+        //if (id != user.Id)
+        //{
+        //    TempData["ErrorMessage"] = "ID mismatch";
+        //    return RedirectToAction("SuperAdminDashboard");
+        //}
 
         if (user.Role == "SuperAdmin")
         {
@@ -326,7 +371,7 @@ public class AdminController : Controller
         {
             try
             {
-                var existingUser = await _context.Users.FindAsync(id);
+                var existingUser = await _context.Users.FindAsync(user.Id);
                 if (existingUser == null)
                 {
                     return NotFound();
@@ -336,13 +381,6 @@ public class AdminController : Controller
                 existingUser.UserName = user.UserName;
                 existingUser.Email = user.Email;
                 existingUser.Role = user.Role;
-
-               
-                //if (!string.IsNullOrEmpty(Password))
-                //{
-                //    var passwordHasher = new PasswordHasher<User>();
-                //    existingUser.Password = passwordHasher.HashPassword(existingUser, Password);
-                //}
 
                 await _context.SaveChangesAsync();
 
@@ -366,39 +404,26 @@ public class AdminController : Controller
                 ModelState.AddModelError("", "An unexpected error occurred while saving.");
                 
             }
-        }
-
-        
+        } 
         return View(user);
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     [HttpGet]
     [Authorize(Policy = "UserOrHigher")]
     public IActionResult AddEmployee()
     {
-        return RedirectToAction("Index", "Employes");
+        return RedirectToAction("Create", "Employes");
+    }
+    [HttpGet]
+    [Authorize(Policy = "User")]
+    public IActionResult Empolylist()
+    {
+        return RedirectToAction("List", "Employes");
     }
 
 
 
-    //[HttpGet]
-    //[Authorize(Policy = "User")]
-    //public IActionResult Empolylist()
-    //{
-    //    return RedirectToAction("List", "Employes");
-    //}
+
 
 
 
@@ -422,7 +447,4 @@ public class AdminController : Controller
     {
         return _context.Users.Any(e => e.Id == id);
     }
-
-
-
 }

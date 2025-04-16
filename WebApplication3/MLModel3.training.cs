@@ -91,10 +91,10 @@ namespace WebApplication3
         public static IEstimator<ITransformer> BuildPipeline(MLContext mlContext)
         {
             // Data process configuration with pipeline data transformations
-            var pipeline = mlContext.Transforms.Categorical.OneHotEncoding(new []{new InputOutputColumnPair(@"Education", @"Education"),new InputOutputColumnPair(@"Gender", @"Gender"),new InputOutputColumnPair(@"EmployementType", @"EmployementType"),new InputOutputColumnPair(@"Country", @"Country")}, outputKind: OneHotEncodingEstimator.OutputKind.Indicator)      
+            var pipeline = mlContext.Transforms.Categorical.OneHotEncoding(new []{new InputOutputColumnPair(@"Education", @"Education"),new InputOutputColumnPair(@"EmployementType", @"EmployementType"),new InputOutputColumnPair(@"Country", @"Country")}, outputKind: OneHotEncodingEstimator.OutputKind.Indicator)      
                                     .Append(mlContext.Transforms.ReplaceMissingValues(new []{new InputOutputColumnPair(@"Age", @"Age"),new InputOutputColumnPair(@"Experience", @"Experience")}))      
                                     .Append(mlContext.Transforms.Text.FeaturizeText(inputColumnName:@"Skills",outputColumnName:@"Skills"))      
-                                    .Append(mlContext.Transforms.Concatenate(@"Features", new []{@"Education",@"Gender",@"EmployementType",@"Country",@"Age",@"Experience",@"Skills"}))      
+                                    .Append(mlContext.Transforms.Concatenate(@"Features", new []{@"Education",@"EmployementType",@"Country",@"Age",@"Experience",@"Skills"}))      
                                     .Append(mlContext.Regression.Trainers.FastForest(new FastForestRegressionTrainer.Options(){NumberOfTrees=4,NumberOfLeaves=4,FeatureFraction=1F,LabelColumnName=@"Salary",FeatureColumnName=@"Features"}));
 
             return pipeline;

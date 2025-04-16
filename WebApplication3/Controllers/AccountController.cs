@@ -107,7 +107,7 @@ namespace WebApplication3.Controllers
                         var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim("Name", user.UserName),
+                    new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.Role, user.Role) 
                 };
 
@@ -135,80 +135,14 @@ namespace WebApplication3.Controllers
             }
             return View(model);
         }
-        //public IActionResult ForgotPassword()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> ForgotPassword(string email)
-        //{
-        //    ViewBag.Email = email;
-
-        //    // Manual validation since we're not using DataAnnotations
-        //    if (string.IsNullOrEmpty(email) || !IsValidEmail(email))
-        //    {
-        //        ViewBag.EmailError = "Invalid email address";
-        //        return View();
-        //    }
-
-        //    var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-        //     // Add this using directive at the top of the file
-
-        //    // No other changes are needed in the file for this specific error.
-        //    if (user != null)
-        //    {
-        //        var token = await GeneratePasswordResetTokenAsync(user);
-        //        string resetUrl = Url.Action("ResetPassword", "Account", new { token }, Request.Scheme);
-
-        //        if (string.IsNullOrEmpty(resetUrl))
-        //        {
-        //            // Handle URL generation error
-        //            ViewBag.Error = "Could not generate reset link";
-        //            return View();
-        //        }
-
-        //        Console.WriteLine("Password reset link: " + resetUrl);
-        //        // In production, you would send the email here
-        //    }
-
-        //    // Always show success message (security best practice to not reveal if email exists)
-        //    ViewBag.SuccessMessage = "If your email exists in our system, you'll receive a password reset link";
-        //    return View();
-        //}
-
-        //private bool IsValidEmail(string email)
-        //{
-        //    try
-        //    {
-        //        var addr = new System.Net.Mail.MailAddress(email);
-        //        return addr.Address == email;
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        //private async Task<string> GeneratePasswordResetTokenAsync(User user)
-        //{
-        //    // Implement your custom token generation logic
-        //    // Example: Combine user info with timestamp and hash it
-        //    var tokenData = $"{user.Id}|{DateTime.UtcNow.Ticks}";
-        //    return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(tokenData));
-        //}
+        
 
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
-        //[Authorize]
-        //    public IActionResult SecurePage()
-        //{
-        //    ViewBag.Name = HttpContext.User.Identity.Name;
-        //    return View();
-        //}
+       
     }
     // Change the type of Id in RegistrationViewModel to in
 }

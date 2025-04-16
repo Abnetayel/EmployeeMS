@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication3.Data;
 using System.Security.Claims;
+using WebApplication3.Repository;
+using WebApplication5.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,7 @@ builder.Services.AddAuthorization(options =>
 // Configure DbContext with SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IImageRepository, CloudImageRepository>();
 //builder.Services.AddIdentityCore<User>(options => { /* options if needed */ })
 //    .AddDefaultTokenProviders();
 

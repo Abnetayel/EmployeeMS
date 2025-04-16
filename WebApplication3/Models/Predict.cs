@@ -10,6 +10,6 @@
         public required decimal Salary { get; set; }
         public required string Gender { get; set; }
         public required string Country { get; set; }
-        public required string EmployementType { get; set; }
+        public required string EmployementType { get; set; } 
     }
 }

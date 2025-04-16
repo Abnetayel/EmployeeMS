@@ -5,110 +5,120 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
-public partial class MLModel2
+namespace MLModel2_WebApi1
 {
-    /// <summary>
-    /// model input class for MLModel2.
-    /// </summary>
-    #region model input class
-    public class ModelInput
+    public partial class MLModel2
     {
-        [LoadColumn(1)]
-        [ColumnName(@"Age")]
-        public float Age { get; set; }
+        /// <summary>
+        /// model input class for MLModel2.
+        /// </summary>
+        #region model input class
+        public class ModelInput
+        {
+            [LoadColumn(0)]
+            [ColumnName(@"Id")]
+            public float Id { get; set; }
 
-        [LoadColumn(2)]
-        [ColumnName(@"Experience")]
-        public float Experience { get; set; }
+            [LoadColumn(1)]
+            [ColumnName(@"Age")]
+            public float Age { get; set; }
 
-        [LoadColumn(3)]
-        [ColumnName(@"Education")]
-        public string Education { get; set; }
+            [LoadColumn(2)]
+            [ColumnName(@"Experience")]
+            public float Experience { get; set; }
 
-        [LoadColumn(4)]
-        [ColumnName(@"Skills")]
-        public string Skills { get; set; }
+            [LoadColumn(3)]
+            [ColumnName(@"Education")]
+            public string Education { get; set; }
 
-        [LoadColumn(5)]
-        [ColumnName(@"Gender")]
-        public string Gender { get; set; }
+            [LoadColumn(4)]
+            [ColumnName(@"Skills")]
+            public string Skills { get; set; }
 
-        [LoadColumn(6)]
-        [ColumnName(@"EmployementType")]
-        public string EmployementType { get; set; }
+            [LoadColumn(5)]
+            [ColumnName(@"Gender")]
+            public string Gender { get; set; }
 
-        [LoadColumn(7)]
-        [ColumnName(@"Country")]
-        public string Country { get; set; }
+            [LoadColumn(6)]
+            [ColumnName(@"EmployementType")]
+            public string EmployementType { get; set; }
 
-        [LoadColumn(8)]
-        [ColumnName(@"Salary")]
-        public float Salary { get; set; }
+            [LoadColumn(7)]
+            [ColumnName(@"Country")]
+            public string Country { get; set; }
 
-    }
+            [LoadColumn(8)]
+            [ColumnName(@"Salary")]
+            public float Salary { get; set; }
 
-    #endregion
+        }
 
-    /// <summary>
-    /// model output class for MLModel2.
-    /// </summary>
-    #region model output class
-    public class ModelOutput
-    {
-        [ColumnName(@"Age")]
-        public float Age { get; set; }
+        #endregion
 
-        [ColumnName(@"Experience")]
-        public float Experience { get; set; }
+        /// <summary>
+        /// model output class for MLModel2.
+        /// </summary>
+        #region model output class
+        public class ModelOutput
+        {
+            [ColumnName(@"Id")]
+            public float Id { get; set; }
 
-        [ColumnName(@"Education")]
-        public float[] Education { get; set; }
+            [ColumnName(@"Age")]
+            public float Age { get; set; }
 
-        [ColumnName(@"Skills")]
-        public float[] Skills { get; set; }
+            [ColumnName(@"Experience")]
+            public float Experience { get; set; }
 
-        [ColumnName(@"Gender")]
-        public float[] Gender { get; set; }
+            [ColumnName(@"Education")]
+            public float[] Education { get; set; }
 
-        [ColumnName(@"EmployementType")]
-        public float[] EmployementType { get; set; }
+            [ColumnName(@"Skills")]
+            public float[] Skills { get; set; }
 
-        [ColumnName(@"Country")]
-        public float[] Country { get; set; }
+            [ColumnName(@"Gender")]
+            public float[] Gender { get; set; }
 
-        [ColumnName(@"Salary")]
-        public float Salary { get; set; }
+            [ColumnName(@"EmployementType")]
+            public float[] EmployementType { get; set; }
 
-        [ColumnName(@"Features")]
-        public float[] Features { get; set; }
+            [ColumnName(@"Country")]
+            public float[] Country { get; set; }
 
-        [ColumnName(@"Score")]
-        public float Score { get; set; }
+            [ColumnName(@"Salary")]
+            public float Salary { get; set; }
 
-    }
+            [ColumnName(@"Features")]
+            public float[] Features { get; set; }
 
-    #endregion
+            [ColumnName(@"Score")]
+            public float Score { get; set; }
 
-    private static string MLNetModelPath = Path.GetFullPath("MLModel2.mlnet");
+        }
 
-    public static readonly Lazy<PredictionEngine<ModelInput, ModelOutput>> PredictEngine = new Lazy<PredictionEngine<ModelInput, ModelOutput>>(() => CreatePredictEngine(), true);
+        #endregion
+
+        private static string MLNetModelPath = Path.GetFullPath("MLModel2.mlnet");
+
+        public static readonly Lazy<PredictionEngine<ModelInput, ModelOutput>> PredictEngine = new Lazy<PredictionEngine<ModelInput, ModelOutput>>(() => CreatePredictEngine(), true);
 
 
-    private static PredictionEngine<ModelInput, ModelOutput> CreatePredictEngine()
-    {
-        var mlContext = new MLContext();
-        ITransformer mlModel = mlContext.Model.Load(MLNetModelPath, out var _);
-        return mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
-    }
+        private static PredictionEngine<ModelInput, ModelOutput> CreatePredictEngine()
+        {
+            var mlContext = new MLContext();
+            ITransformer mlModel = mlContext.Model.Load(MLNetModelPath, out var _);
+            return mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
+        }
 
-    /// <summary>
-    /// Use this method to predict on <see cref="ModelInput"/>.
-    /// </summary>
-    /// <param name="input">model input.</param>
-    /// <returns><seealso cref=" ModelOutput"/></returns>
-    public static ModelOutput Predict(ModelInput input)
-    {
-        var predEngine = PredictEngine.Value;
-        return predEngine.Predict(input);
+        /// <summary>
+        /// Use this method to predict on <see cref="ModelInput"/>.
+        /// </summary>
+        /// <param name="input">model input.</param>
+        /// <returns><seealso cref=" ModelOutput"/></returns>
+        public static ModelOutput Predict(ModelInput input)
+        {
+            var predEngine = PredictEngine.Value;
+            return predEngine.Predict(input);
+        }
     }
 }

@@ -10,9 +10,12 @@ using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
 using Microsoft.ML.Trainers.FastTree;
 using Microsoft.ML.Transforms;
+
+namespace MLModel2_WebApi1
+{
     public partial class MLModel2
     {
-        public const string RetrainFilePath =  @"C:\Users\abn\source\repos\WebApplication3\WebApplication3\model1.txt";
+        public const string RetrainFilePath =  @"C:\Users\abn\source\repos\WebApplication3\WebApplication3\model11.txt";
         public const char RetrainSeparatorChar = ',';
         public const bool RetrainHasHeader =  true;
         public const bool RetrainAllowQuoting =  false;
@@ -89,12 +92,12 @@ using Microsoft.ML.Transforms;
         {
             // Data process configuration with pipeline data transformations
             var pipeline = mlContext.Transforms.Categorical.OneHotEncoding(new []{new InputOutputColumnPair(@"Education", @"Education"),new InputOutputColumnPair(@"Gender", @"Gender"),new InputOutputColumnPair(@"EmployementType", @"EmployementType"),new InputOutputColumnPair(@"Country", @"Country")}, outputKind: OneHotEncodingEstimator.OutputKind.Indicator)      
-                                    .Append(mlContext.Transforms.ReplaceMissingValues(new []{new InputOutputColumnPair(@"Age", @"Age"),new InputOutputColumnPair(@"Experience", @"Experience")}))      
+                                    .Append(mlContext.Transforms.ReplaceMissingValues(new []{new InputOutputColumnPair(@"Id", @"Id"),new InputOutputColumnPair(@"Age", @"Age"),new InputOutputColumnPair(@"Experience", @"Experience")}))      
                                     .Append(mlContext.Transforms.Text.FeaturizeText(inputColumnName:@"Skills",outputColumnName:@"Skills"))      
-                                    .Append(mlContext.Transforms.Concatenate(@"Features", new []{@"Education",@"Gender",@"EmployementType",@"Country",@"Age",@"Experience",@"Skills"}))      
+                                    .Append(mlContext.Transforms.Concatenate(@"Features", new []{@"Education",@"Gender",@"EmployementType",@"Country",@"Id",@"Age",@"Experience",@"Skills"}))      
                                     .Append(mlContext.Regression.Trainers.FastForest(new FastForestRegressionTrainer.Options(){NumberOfTrees=4,NumberOfLeaves=4,FeatureFraction=1F,LabelColumnName=@"Salary",FeatureColumnName=@"Features"}));
 
             return pipeline;
         }
     }
- 
+ }

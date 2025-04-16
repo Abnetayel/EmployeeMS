@@ -1,4 +1,6 @@
-﻿namespace WebApplication3.Models
+﻿using WebApplication3.Data;
+
+namespace WebApplication3.Models
 {
     public class Employe
     {
@@ -15,5 +17,9 @@
         public required string Currency { get; set; }
         public required string PhoneNumber { get; set; }
         public required string Country { get; set; }
+
+
+        public int? ManagerId { get; set; }
+        public User? Manager { get; set; }
     }
 }

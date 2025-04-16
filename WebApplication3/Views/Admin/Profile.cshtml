@@ -1,0 +1,43 @@
+﻿
+@{
+}
+
+<div class=" mb-3">
+    <label class="form-label">ImageUploadFile</label>
+    <input type="file" class="form-control" id="ImageUploadFile" name="file" />
+    <img src="" id="imagedisplayurl" style="display:none;width:300px">
+</div>
+@section Scripts {
+    <script>
+        var editor= new FroalaEditor("#Content");
+          var imagedisplayurl=document.getElementById("imagedisplayurl");
+              document.getElementById("ImageUploadFile").addEventListener("change", async (event) => {
+              const file = event.target.files[0];
+              console.log(file);
+
+              if (file) {
+                  const formData = new FormData();
+                  formData.append("file", file); // Ensure the key is "file"
+
+                  try {
+                      const response = await fetch("/api/Images", {
+                          method: "POST",
+                          body: formData,
+                      });
+
+                      if (response.ok) {
+                          const result = await response.json();
+                            imagedisplayurl.src=result.url;
+                              imagedisplayurl.style.display="block"
+                      } else {
+                          const error = await response.json();
+                          console.error("Upload failed:", error);
+                      }
+                  } catch (error) {
+                      console.error("Error uploading file:", error);
+                  }
+              }
+          });
+
+    </script>
+ }

@@ -1,0 +1,28 @@
+﻿@using WebApplication3.Models
+@model AssignEmployeesViewModel
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Assign Employees to User</h2>
+    <form asp-action="AssignEmployeesToUser" method="post" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="userId" class="form-label">Select User:</label>
+            <select asp-for="UserId" asp-items="Model.Users" class="form-select" required>
+                <option value="">-- Select a User --</option>
+            </select>
+            <div class="invalid-feedback">
+                Please select a user.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="employeeIds" class="form-label">Select Employees:</label>
+            <select asp-for="EmployeeIds" asp-items="Model.Employees" class="form-select" multiple required>
+                <option value="">-- Select Employees --</option>
+            </select>
+            <div class="invalid-feedback">
+                Please select at least one employee.
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Assign</button>
+    </form>
+</div>

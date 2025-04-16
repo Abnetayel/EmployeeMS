@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebApplication3.Models;
 
 namespace WebApplication3.Data
 {
@@ -25,5 +26,6 @@ namespace WebApplication3.Data
         public string? Password { get; set; }
         [Required]
         public string Role { get; set; } = "User";
+        public ICollection<Employe>? ManagedEmployees { get; set; }
     }
 }
