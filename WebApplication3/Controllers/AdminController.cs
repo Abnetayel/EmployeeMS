@@ -107,7 +107,8 @@ public class AdminController : Controller
         {
             UserName = model.UserName,
             Email = model.Email,
-            Role = "User"
+            Role = "User",
+            PasswordResetToken = Guid.NewGuid().ToString()
         };
 
         var passwordHasher = new PasswordHasher<User>();

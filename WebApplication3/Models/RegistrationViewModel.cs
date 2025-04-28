@@ -6,7 +6,7 @@ namespace WebApplication3.Models
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "UserName is required")]
-        [MaxLength(50)]
+        [MaxLength(20)]
         public string UserName { get; set; }
         [Required(ErrorMessage = "Emial is required")]
         [MaxLength(50)]

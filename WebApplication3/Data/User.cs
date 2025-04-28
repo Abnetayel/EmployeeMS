@@ -27,5 +27,10 @@ namespace WebApplication3.Data
         [Required]
         public string Role { get; set; } = "User";
         public ICollection<Employe>? ManagedEmployees { get; set; }
+
+
+        public string? PasswordResetToken { get; set; }
+        public DateTime? PasswordResetTokenExpiry { get; set; }
+
     }
 }
