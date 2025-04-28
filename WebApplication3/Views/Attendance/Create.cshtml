@@ -1,0 +1,36 @@
+﻿@model WebApplication3.Models.Attendance
+@{
+    ViewData["Title"] = "Mark Attendance";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="EmployeeId" class="form-label">Employee</label>
+        <select asp-for="EmployeeId" class="form-select">
+            @if (ViewBag.Employees != null)
+            {
+                @foreach (var employee in ViewBag.Employees)
+                {
+                    <option value="@employee.Id">@employee.FullName</option>
+                }
+            }
+            else
+            {
+                <option>No employees available</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Date" class="form-label">Date</label>
+        <input asp-for="Date" class="form-control" type="date" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="IsPresent" class="form-label">Is Present</label>
+        <input asp-for="IsPresent" class="form-check-input" type="checkbox" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

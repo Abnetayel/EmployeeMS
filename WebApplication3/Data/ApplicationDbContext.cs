@@ -11,7 +11,7 @@ namespace WebApplication3.Data
         }
         public DbSet<Employe> Employee { get; set; }
         public DbSet<User> Users { get; set; }
-
+        public DbSet<Attendance> Attendances { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
@@ -21,6 +21,12 @@ namespace WebApplication3.Data
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.UserName)
                 .IsUnique();
+
+            modelBuilder.Entity<Attendance>()
+       .HasOne(a => a.Employee)
+       .WithMany(e => e.Attendances)
+       .HasForeignKey(a => a.EmployeeId);
+
             modelBuilder.Entity<Employe>()
        .HasOne(e => e.Manager)
        .WithMany(u => u.ManagedEmployees)

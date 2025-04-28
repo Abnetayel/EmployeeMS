@@ -41,47 +41,40 @@
 
                         <div class="mb-3">
                             <label asp-for="Education" class="form-label">Education</label>
-                            <select asp-for="Education" class="form-control">
-                                <option value="">-- Select Education --</option>
-                                <option value="High School">High School</option>
-                                <option value="Diploma in Computer Science">Diploma in Computer Science</option>
-                                <option value="Bachelor of Computer Science (BSc CS)">Bachelor of Computer Science (BSc CS)</option>
-                                <option value="Bachelor of Engineering (BE/BTech)">Bachelor of Engineering (BE/BTech)</option>
-                                <option value="Master of Computer Science (MSc CS)">Master of Computer Science (MSc CS)</option>
-                                <option value="Master of Technology (MTech)">Master of Technology (MTech)</option>
-                                <option value="Ph.D. in Computer Science">Ph.D. in Computer Science</option>
+                            <select asp-for="Education" class="form-select" required>
+                                <option value="" selected disabled>-- Select Education --</option>
+                                <option value="HighSchool">High School</option>
+                                <option value="PhD">PhD</option>
+                                <option value="Bachelor">Bachelor</option>
+                                <option value="Master">Master</option>
                                 <option value="Other">Other (Specify)</option>
                             </select>
                             <span asp-validation-for="Education" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Skills" class="form-label">Skills</label>
-                            <select asp-for="Skills" class="form-select" multiple size="5">
-                                <optgroup label="Development Roles">
-                                    <option value="Frontend">Frontend Developer</option>
-                                    <option value="Backend">Backend Developer</option>
-                                    <option value="Fullstack">Fullstack Developer</option>
-                                    <option value="Mobile">Mobile Developer</option>
-                                </optgroup>
-
-                                <optgroup label="Specializations">
-                                    <option value="Machine Learning">Machine Learning Engineer</option>
-                                    <option value="Data Science">Data Scientist</option>
-                                    <option value="DevOps">DevOps Engineer</option>
-                                    <option value="Cloud">Cloud Architect</option>
-                                </optgroup>
-
-                                <optgroup label="Other Roles">
-                                    <option value="UI/UX Designer">UI/UX Designer</option>
-                                    <option value="QA Engineer">QA Engineer</option>
-                                    <option value="Database Admin">Database Administrator</option>
-                                    <option value="Technical Support">Technical Support</option>
-                                </optgroup>
-                            </select>
-                            <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple options</small>
-                            <span asp-validation-for="Skills" class="text-danger"></span>
+                        <div class="mb-4">
+                            <label asp-for="Skills" class="form-label fw-bold">Primary Skill <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-code"></i></span>
+                                <select asp-for="Skills" class="form-select" required>
+                                    <optgroup label="Development Roles">
+                                        <option value="Frontend">Frontend Developer</option>
+                                        <option value="Backend">Backend Developer</option>
+                                        <option value="Fullstack">Fullstack Developer</option>
+                                        <option value="Mobile">Mobile Developer</option>
+                                    </optgroup>
+                                    <optgroup label="Specializations">
+                                        <option value="Machine Learning">Machine Learning Engineer</option>
+                                        <option value="DevOps">DevOps Engineer</option>
+                                        <option value="Cloud">Cloud Architect</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <span asp-validation-for="Skills" class="text-danger small"></span>
+                            <div class="form-text">Select your primary professional skill</div>
                         </div>
+
+
                         <div class="mb-3">
                             <label asp-for="Gender" class="form-label">Gender</label>
                             <select asp-for="Gender" class="form-control">
@@ -110,17 +103,17 @@
                         @*     <span asp-validation-for="Salary" class="text-danger"></span> *@
                         @* </div> *@
 
-                        <div class="mb-3">
-                            <label asp-for="Currency" class="form-label">Currency</label>
-                            <select asp-for="Currency" class="form-control">
-                                <option value="USD">US Dollar ($)</option>
-                                <option value="GBP">British Pound (£)</option>
-                                <option value="EUR">Euro (€)</option>
-                                <option value="ETB">Ethiopian Birr (Br)</option>
-                                <option value="JPY">Japanese Yen (¥)</option>
-                            </select>
-                            <span asp-validation-for="Currency" class="text-danger"></span>
-                        </div>
+                        @* <div class="mb-3"> *@
+                        @*     <label asp-for="Currency" class="form-label">Currency</label> *@
+                        @*     <select asp-for="Currency" class="form-control"> *@
+                        @*         <option value="USD">US Dollar ($)</option> *@
+                        @*         <option value="GBP">British Pound (£)</option> *@
+                        @*         <option value="EUR">Euro (€)</option> *@
+                        @*         <option value="ETB">Ethiopian Birr (Br)</option> *@
+                        @*         <option value="JPY">Japanese Yen (¥)</option> *@
+                        @*     </select> *@
+                        @*     <span asp-validation-for="Currency" class="text-danger"></span> *@
+                        @* </div> *@
                         <div class="mb-3">
                             <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
                             <input asp-for="PhoneNumber" class="form-control" />

@@ -1,0 +1,56 @@
+﻿@model DashboardViewModel
+
+<div class="container py-5">
+    <h1 class="mb-4">Employee Dashboard</h1>
+
+    <div class="row">
+        <!-- Total Employees -->
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Employees</h5>
+                    <p class="card-text display-4">@Model.TotalEmployees</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Average Salary -->
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Average Salary</h5>
+                    <p class="card-text display-4">$@Model.AverageSalary.ToString("N2")</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gender Distribution -->
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Gender Distribution</h5>
+                    <canvas id="genderChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            // Gender Distribution Chart
+            const genderCtx = document.getElementById('genderChart').getContext('2d');
+            const genderData = {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.GenderDistribution.Select(g => g.Gender))),
+                datasets: [{
+                    label: 'Gender Distribution',
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.GenderDistribution.Select(g => g.Count))),
+                    backgroundColor: ['#007bff', '#28a745', '#ffc107'],
+                }]
+            };
+            new Chart(genderCtx, {
+                type: 'pie',
+                data: genderData,
+            });
+        </script>
+    }
+</div>

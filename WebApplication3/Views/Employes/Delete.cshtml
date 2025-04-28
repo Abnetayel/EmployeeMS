@@ -79,41 +79,42 @@
                             @Html.DisplayNameFor(model => model.Salary)
                         </dt>
                         <dd class="col-sm-8">
-                            @{
-                                var currencySymbol = "";
-                                switch (Model.Currency)
-                                {
-                                    case "USD":
-                                        currencySymbol = "$";
-                                        break;
-                                    case "GBP":
-                                        currencySymbol = "£";
-                                        break;
-                                    case "EUR":
-                                        currencySymbol = "€";
-                                        break;
-                                    case "ETB":
-                                        currencySymbol = "Br";
-                                        break;
-                                    case "JPY":
-                                        currencySymbol = "¥";
-                                        break;
-                                    default:
-                                        currencySymbol = Model.Currency;
-                                        break;
-                                }
-                            }
-                            @currencySymbol @Model.Salary.ToString("N2")
+                            @* @{ *@
+                            @*     var currencySymbol = ""; *@
+                            @*     switch (Model.Currency) *@
+                            @*     { *@
+                            @*         case "USD": *@
+                            @*             currencySymbol = "$"; *@
+                            @*             break; *@
+                            @*         case "GBP": *@
+                            @*             currencySymbol = "£"; *@
+                            @*             break; *@
+                            @*         case "EUR": *@
+                            @*             currencySymbol = "€"; *@
+                            @*             break; *@
+                            @*         case "ETB": *@
+                            @*             currencySymbol = "Br"; *@
+                            @*             break; *@
+                            @*         case "JPY": *@
+                            @*             currencySymbol = "¥"; *@
+                            @*             break; *@
+                            @*         default: *@
+                            @*             currencySymbol = Model.Currency; *@
+                            @*             break; *@
+                            @*     } *@
+                            @* } *@
+                             @* @Model.Salary.ToString("N2") *@
+                            @Html.DisplayFor(model => model.Salary)
                         </dd>
 
-                        <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.Currency)
-                        </dt>
-                        <dd class="col-sm-8">
-                            <span class="badge bg-primary">
-                                @Html.DisplayFor(model => model.Currency)
-                            </span>
-                        </dd>
+                        @* <dt class="col-sm-4"> *@
+                        @*     @Html.DisplayNameFor(model => model.Currency) *@
+                        @* </dt> *@
+                        @* <dd class="col-sm-8"> *@
+                        @*     <span class="badge bg-primary"> *@
+                        @*         @Html.DisplayFor(model => model.Currency) *@
+                        @*     </span> *@
+                        @* </dd> *@
                     </dl>
                 </div>
                 <div class="card-footer text-muted">

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApplication3.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
     <div class="d-flex" id="wrapper">
@@ -49,6 +51,7 @@
                                         <i class="fas fa-user-tie me-2"></i>Add Employee
                                     </a>
                                 </li>
+                             
                             </ul>
                         </li>
                     }
@@ -82,19 +85,55 @@
                     }
                     else
                     {
-                        <a asp-controller="Admin" asp-action="UserDashboard" class="list-group-item list-group-item-action bg-primary text-white">
-                            <i class="fas fa-tachometer-alt me-2"></i>User Dashboard
-                        </a>
+                      
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="UserMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-tachometer-alt me-2"></i>User
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="UserMenu">
+                                
+                                <li>
+                                    <a class="dropdown-item" asp-action="Create" asp-controller="Attendance">
+                                        <i class="fas fa-user-tie me-2"></i>Employee Attendace
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                     }
 
                     <!-- Common menu items for all roles -->
-                    <a href="#" class="list-group-item list-group-item-action bg-primary text-white">
-                        <i class="fas fa-user me-2"></i>Profile
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action bg-primary text-white">
-                        <i class="fas fa-cog me-2"></i>Settings
-                    </a>
+                    <div class="dropdown">
+                        <a href="#" class="list-group-item list-group-item-action bg-primary text-white dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-2"></i>Profile
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                            <li>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="ViewProfile">
+                                    <i class="fas fa-id-card me-2"></i>View Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="EditProfile">
+                                    <i class="fas fa-edit me-2"></i>Edit Profile
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 }
+                <a href="#" class="list-group-item list-group-item-action bg-primary text-white" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                    <i class="fas fa-cog me-2"></i>Settings
+                </a>
+
+
             </div>
         </div>
 
@@ -147,12 +186,46 @@
                 </main>
             </div>
 
-            <footer class="footer text-muted bg-light py-3">
-                <div class="container-fluid text-center">
-                    &copy; 2025 - Employee Management
-                </div>
-            </footer>
+            @* <footer class="footer text-muted bg-light py-3"> *@
+            @*     <div class="container-fluid text-center"> *@
+            @*         &copy; 2025 - Employee Management *@
+            @*     </div> *@
+            @* </footer> *@
         </div>
+        <!-- Settings Modal -->
+        <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Dark Mode Toggle -->
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                            <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
+                        </div>
+
+                        <!-- Font Size Adjustment -->
+                        <div class="mb-3">
+                            <label for="fontSizeRange" class="form-label">Font Size</label>
+                            <input type="range" class="form-range" id="fontSizeRange" min="14" max="20" step="1">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -167,8 +240,56 @@
                 wrapper.classList.toggle('toggled');
             });
         });
+
+          
+        document.addEventListener('DOMContentLoaded', function () {
+            const body = document.body;
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const fontSizeRange = document.getElementById('fontSizeRange');
+            // const sidebarToggleSwitch = document.getElementById('sidebarToggleSwitch');
+            // const wrapper = document.getElementById('wrapper');
+
+            // Load saved preferences
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                body.classList.add('dark-mode');
+                darkModeToggle.checked = true;
+            }
+
+            const savedFontSize = localStorage.getItem('fontSize');
+            if (savedFontSize) {
+                body.style.fontSize = `${savedFontSize}px`;
+                fontSizeRange.value = savedFontSize;
+            }
+
+            if (localStorage.getItem('sidebarToggled') === 'true') {
+                wrapper.classList.add('toggled');
+                sidebarToggleSwitch.checked = true;
+            }
+
+            // Dark Mode Toggle
+            darkModeToggle.addEventListener('change', function () {
+                if (darkModeToggle.checked) {
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+            });
+
+            // Font Size Adjustment
+            fontSizeRange.addEventListener('input', function () {
+                const fontSize = fontSizeRange.value;
+                body.style.fontSize = `${fontSize}px`;
+                localStorage.setItem('fontSize', fontSize);
+            });
+
+        });
+        
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

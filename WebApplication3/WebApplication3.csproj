@@ -32,6 +32,11 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
     <PackageReference Include="Plotly.NET" Version="3.0.1" />
   </ItemGroup>
+  <ItemGroup Label="MLModel">
+    <None Include="MLModel.mlnet">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup Label="MLModel3">
     <None Include="MLModel3.mlnet">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

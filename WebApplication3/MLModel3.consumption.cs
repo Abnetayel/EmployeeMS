@@ -25,15 +25,15 @@ namespace WebApplication3
 
             [LoadColumn(3)]
             [ColumnName(@"Education")]
-            public string Education { get; set; }
+            public float Education { get; set; }
 
             [LoadColumn(4)]
             [ColumnName(@"Skills")]
-            public string Skills { get; set; }
+            public float Skills { get; set; }
 
             [LoadColumn(6)]
             [ColumnName(@"EmployementType")]
-            public string EmployementType { get; set; }
+            public float EmployementType { get; set; }
 
             [LoadColumn(7)]
             [ColumnName(@"Country")]
@@ -60,13 +60,13 @@ namespace WebApplication3
             public float Experience { get; set; }
 
             [ColumnName(@"Education")]
-            public float[] Education { get; set; }
+            public float Education { get; set; }
 
             [ColumnName(@"Skills")]
-            public float[] Skills { get; set; }
+            public float Skills { get; set; }
 
             [ColumnName(@"EmployementType")]
-            public float[] EmployementType { get; set; }
+            public float EmployementType { get; set; }
 
             [ColumnName(@"Country")]
             public float[] Country { get; set; }

@@ -1,0 +1,51 @@
+Id,Age,Experience,Education,Skills,Gender,EmployementType,Country,Salary
+1,28,3,2,Frontend,1,1,USA,65000
+2,32,7,3,Backend,0,1,USA,95000
+3,24,1,0,Frontend,1,2,UK,32000
+4,35,10,4,Machine Learning,0,1,Canada,120000
+5,30,5,2,Backend,1,1,Germany,70000
+6,27,4,2,Frontend,0,1,USA,80000
+7,40,15,3,DevOps,1,1,USA,110000
+8,22,0,0,Frontend,0,2,Australia,28000
+9,45,20,4,Machine Learning,1,1,USA,150000
+10,29,6,2,Backend,0,1,UK,75000
+11,33,8,3,Fullstack,1,1,Canada,90000
+12,26,2,2,Frontend,0,1,USA,60000
+13,38,12,3,DevOps,1,1,Germany,105000
+14,31,6,2,Backend,0,1,USA,85000
+15,42,17,4,Cloud,1,1,USA,130000
+16,25,3,2,Frontend,0,2,UK,45000
+17,36,11,3,Fullstack,1,1,Canada,98000
+18,23,1,0,Frontend,0,2,Australia,30000
+19,47,22,4,Cloud,1,1,USA,160000
+20,34,9,3,Mobile,0,1,USA,92000
+21,28,4,2,Backend,1,1,Germany,68000
+22,39,13,3,Cloud,0,1,Canada,108000
+23,30,7,2,Fullstack,1,1,USA,78000
+24,44,18,4,Machine Learning,0,1,USA,140000
+25,27,5,2,Frontend,1,1,UK,72000
+26,37,12,3,Mobile,0,1,Canada,102000
+27,26,3,2,Backend,1,1,USA,67000
+28,41,16,4,Machine Learning,0,1,Germany,125000
+29,29,6,2,Fullstack,1,1,USA,82000
+30,35,10,3,DevOps,0,1,Canada,95000
+31,24,2,2,Frontend,1,2,UK,48000
+32,46,19,4,Machine Learning,0,1,USA,145000
+33,33,8,2,Backend,1,1,USA,88000
+34,38,13,3,Mobile,0,1,Germany,107000
+35,31,7,2,Fullstack,1,1,Canada,79000
+36,43,17,4,Cloud,0,1,USA,135000
+37,28,5,2,Frontend,1,1,UK,70000
+38,36,11,3,Backend,0,1,USA,99000
+39,25,4,2,Frontend,1,2,Australia,42000
+40,45,20,4,Machine Learning,0,1,Canada,155000
+41,32,9,2,Mobile,1,1,USA,86000
+42,39,14,3,Machine Learning,0,1,Germany,112000
+43,30,8,2,Fullstack,1,1,USA,83000
+44,44,18,4,Cloud,0,1,USA,142000
+45,27,6,2,Frontend,1,2,UK,58000
+46,37,12,3,DevOps,0,1,Canada,104000
+47,26,5,2,Backend,1,1,USA,69000
+48,42,16,4,Cloud,0,1,Germany,128000
+49,29,7,2,Fullstack,1,1,USA,81000
+50,38,14,3,Backend,0,1,Canada,110000

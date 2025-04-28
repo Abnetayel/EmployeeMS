@@ -151,20 +151,20 @@
                                 </div>
                                 <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label asp-for="Currency" class="form-label fw-bold">Currency <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
-                                    <select asp-for="Currency" class="form-select" required>
-                                        <option value="USD">US Dollar ($)</option>
-                                        <option value="GBP">British Pound (£)</option>
-                                        <option value="EUR">Euro (€)</option>
-                                        <option value="ETB">Ethiopian Birr (Br)</option>
-                                        <option value="JPY">Japanese Yen (¥)</option>
-                                    </select>
-                                </div>
-                                <span asp-validation-for="Currency" class="text-danger small"></span>
-                            </div>
+                            @* <div class="col-md-6"> *@
+                            @*     <label asp-for="Currency" class="form-label fw-bold">Currency <span class="text-danger">*</span></label> *@
+                            @*     <div class="input-group"> *@
+                            @*         <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span> *@
+                            @*         <select asp-for="Currency" class="form-select" required> *@
+                            @*             <option value="USD">US Dollar ($)</option> *@
+                            @*             <option value="GBP">British Pound (£)</option> *@
+                            @*             <option value="EUR">Euro (€)</option> *@
+                            @*             <option value="ETB">Ethiopian Birr (Br)</option> *@
+                            @*             <option value="JPY">Japanese Yen (¥)</option> *@
+                            @*         </select> *@
+                            @*     </div> *@
+                            @*     <span asp-validation-for="Currency" class="text-danger small"></span> *@
+                            @* </div> *@
                         </div>
 
 
@@ -212,12 +212,18 @@
                                 <a asp-action="Index" class="btn btn-outline-secondary me-2">
                                     <i class="fas fa-list me-2"></i> Back to List
                                 </a>
-                                @* <a asp-action="Predict" class="btn btn-outline-primary"> *@
-                                @*     <i class="fas fa-chart-line me-2"></i> Go to Predict *@
-                                @* </a> *@
+                                 <a asp-action="Predict" class="btn btn-outline-primary"> 
+                                     <i class="fas fa-chart-line me-2"></i> Go to Predict 
+                                 </a> 
                                 <a asp-action="AssignEmployees" asp-controller="Admin" class="btn btn-outline-primary">
                                     <i class="fas fa-chart-line me-2"></i> go to assign
                                 </a>
+                                <a asp-action="PreprocessDataView" asp-controller="ML" class="btn btn-outline-primary">
+                                    <i class="fas fa-cogs me-2"></i> Preprocess Data
+                                </a>
+
+
+
                                 @* <div class=" mb-3"> *@
                                 @*     <label class="form-label">ImageUploadFile</label> *@
                                 @*     <input type="file" class="form-control" id="ImageUploadFile" /> *@
@@ -287,10 +293,10 @@
                     data: JSON.stringify(formData),
                     success: function(response) {
                         if (response.success) {
-                            $('#predictionInfo').html(`Predicted salary (${response.method}): $${response.predictedSalary}`)
+                            $('#predictionInfo').html(`Predicted salary (${response.method}): ${response.predictedSalary}`)
                                                 .addClass('text-success');
 
-                            if (confirm(`Use predicted salary: $${response.predictedSalary}?`)) {
+                            if (confirm(`Use predicted salary: ${response.predictedSalary}?`)) {
     document.getElementById('salaryInput').value = response.predictedSalary.replace(/[^0-9.]/g, '');
 }
                         } else {

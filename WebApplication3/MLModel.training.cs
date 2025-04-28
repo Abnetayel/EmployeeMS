@@ -13,9 +13,9 @@ using Microsoft.ML.Transforms;
 
 namespace WebApplication3
 {
-    public partial class MLModel3
+    public partial class MLModel
     {
-        public const string RetrainFilePath =  @"C:\Users\abn\source\repos\WebApplication3\WebApplication3\model12_encoded.txt";
+        public const string RetrainFilePath =  @"C:\Users\abn\source\repos\WebApplication3\WebApplication3\model11.txt";
         public const char RetrainSeparatorChar = ',';
         public const bool RetrainHasHeader =  true;
         public const bool RetrainAllowQuoting =  false;
@@ -91,10 +91,13 @@ namespace WebApplication3
         public static IEstimator<ITransformer> BuildPipeline(MLContext mlContext)
         {
             // Data process configuration with pipeline data transformations
-            var pipeline = mlContext.Transforms.Categorical.OneHotEncoding(@"Country", @"Country", outputKind: OneHotEncodingEstimator.OutputKind.Indicator)      
-                                    .Append(mlContext.Transforms.ReplaceMissingValues(new []{new InputOutputColumnPair(@"Age", @"Age"),new InputOutputColumnPair(@"Experience", @"Experience"),new InputOutputColumnPair(@"Education", @"Education"),new InputOutputColumnPair(@"Skills", @"Skills"),new InputOutputColumnPair(@"EmployementType", @"EmployementType")}))      
-                                    .Append(mlContext.Transforms.Concatenate(@"Features", new []{@"Country",@"Age",@"Experience",@"Education",@"Skills",@"EmployementType"}))      
-                                    .Append(mlContext.Regression.Trainers.FastForest(new FastForestRegressionTrainer.Options(){NumberOfTrees=13,NumberOfLeaves=5,FeatureFraction=0.84876466F,LabelColumnName=@"Salary",FeatureColumnName=@"Features"}));
+            var pipeline = mlContext.Transforms.Categorical.OneHotEncoding(new []{new InputOutputColumnPair(@"Education", @"Education"),new InputOutputColumnPair(@"Gender", @"Gender"),new InputOutputColumnPair(@"EmployementType", @"EmployementType"),new InputOutputColumnPair(@"Country", @"Country")}, outputKind: OneHotEncodingEstimator.OutputKind.Indicator)      
+                                    .Append(mlContext.Transforms.ReplaceMissingValues(new []{new InputOutputColumnPair(@"Id", @"Id"),new InputOutputColumnPair(@"Age", @"Age"),new InputOutputColumnPair(@"Experience", @"Experience")}))      
+                                    .Append(mlContext.Transforms.Text.FeaturizeText(inputColumnName:@"Skills",outputColumnName:@"Skills"))      
+                                    .Append(mlContext.Transforms.Concatenate(@"Features", new []{@"Education",@"Gender",@"EmployementType",@"Country",@"Id",@"Age",@"Experience",@"Skills"}))      
+                                    .Append(mlContext.Transforms.Conversion.MapValueToKey(outputColumnName:@"Salary",inputColumnName:@"Salary",addKeyValueAnnotationsAsText:false))      
+                                    .Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(binaryEstimator:mlContext.BinaryClassification.Trainers.FastTree(new FastTreeBinaryTrainer.Options(){NumberOfLeaves=4,MinimumExampleCountPerLeaf=20,NumberOfTrees=4,MaximumBinCountPerFeature=254,FeatureFraction=1,LearningRate=0.09999999999999998,LabelColumnName=@"Salary",FeatureColumnName=@"Features",DiskTranspose=false}),labelColumnName: @"Salary"))      
+                                    .Append(mlContext.Transforms.Conversion.MapKeyToValue(outputColumnName:@"PredictedLabel",inputColumnName:@"PredictedLabel"));
 
             return pipeline;
         }

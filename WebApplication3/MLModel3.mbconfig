@@ -8,7 +8,7 @@
     "KeepPunctuations": false,
     "AllowQuoting": false,
     "Type": "TabularFile",
-    "FilePath": "C:\\Users\\abn\\source\\repos\\WebApplication3\\WebApplication3\\model11.txt",
+    "FilePath": "C:\\Users\\abn\\source\\repos\\WebApplication3\\WebApplication3\\model12_encoded.txt",
     "Delimiter": ",",
     "DecimalMarker": ".",
     "HasHeader": true,
@@ -40,7 +40,7 @@
       {
         "ColumnName": "Education",
         "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "String",
+        "ColumnDataFormat": "Single",
         "IsCategorical": true,
         "Type": "Column",
         "Version": 5
@@ -48,7 +48,7 @@
       {
         "ColumnName": "Skills",
         "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "String",
+        "ColumnDataFormat": "Single",
         "IsCategorical": false,
         "Type": "Column",
         "Version": 5
@@ -56,7 +56,7 @@
       {
         "ColumnName": "Gender",
         "ColumnPurpose": "Ignore",
-        "ColumnDataFormat": "String",
+        "ColumnDataFormat": "Single",
         "IsCategorical": true,
         "Type": "Column",
         "Version": 5
@@ -64,7 +64,7 @@
       {
         "ColumnName": "EmployementType",
         "ColumnPurpose": "Feature",
-        "ColumnDataFormat": "String",
+        "ColumnDataFormat": "Single",
         "IsCategorical": true,
         "Type": "Column",
         "Version": 5
@@ -99,50 +99,256 @@
         "Version": 1,
         "Type": "Trial",
         "TrainerName": "FastForestRegression",
-        "Score": 0.62054329463829128,
-        "RuntimeInSeconds": 0.948,
+        "Score": 0.65601723540647083,
+        "RuntimeInSeconds": 0.343,
         "Parameter": {
-          "_SCHEMA_": "e0 * e1 * e2 * e3 * e5",
+          "_SCHEMA_": "e0 * e1 * e2 * e4",
           "e0": {
             "OutputColumnNames": [
-              "Education",
-              "EmployementType",
               "Country"
             ],
             "InputColumnNames": [
-              "Education",
-              "EmployementType",
               "Country"
             ]
           },
           "e1": {
             "OutputColumnNames": [
               "Age",
-              "Experience"
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
             ],
             "InputColumnNames": [
               "Age",
-              "Experience"
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
             ]
           },
           "e2": {
-            "InputColumnName": "Skills",
-            "OutputColumnName": "Skills"
-          },
-          "e3": {
             "InputColumnNames": [
-              "Education",
-              "EmployementType",
               "Country",
               "Age",
               "Experience",
-              "Skills"
+              "Education",
+              "Skills",
+              "EmployementType"
             ],
             "OutputColumnName": "Features"
           },
-          "e5": {
+          "e4": {
+            "NumberOfTrees": 13,
+            "NumberOfLeaves": 5,
+            "FeatureFraction": 0.84876466,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.63602077813969182,
+        "RuntimeInSeconds": 0.303,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e4",
+          "e0": {
+            "OutputColumnNames": [
+              "Country"
+            ],
+            "InputColumnNames": [
+              "Country"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ]
+          },
+          "e2": {
+            "InputColumnNames": [
+              "Country",
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
             "NumberOfTrees": 4,
             "NumberOfLeaves": 4,
+            "FeatureFraction": 0.9043822,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.63591331960555453,
+        "RuntimeInSeconds": 0.295,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e4",
+          "e0": {
+            "OutputColumnNames": [
+              "Country"
+            ],
+            "InputColumnNames": [
+              "Country"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ]
+          },
+          "e2": {
+            "InputColumnNames": [
+              "Country",
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 0.9599998,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.62321932995634433,
+        "RuntimeInSeconds": 0.743,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e4",
+          "e0": {
+            "OutputColumnNames": [
+              "Country"
+            ],
+            "InputColumnNames": [
+              "Country"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ]
+          },
+          "e2": {
+            "InputColumnNames": [
+              "Country",
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "Salary",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.62321932995634433,
+        "RuntimeInSeconds": 0.221,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e4",
+          "e0": {
+            "OutputColumnNames": [
+              "Country"
+            ],
+            "InputColumnNames": [
+              "Country"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ],
+            "InputColumnNames": [
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ]
+          },
+          "e2": {
+            "InputColumnNames": [
+              "Country",
+              "Age",
+              "Experience",
+              "Education",
+              "Skills",
+              "EmployementType"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e4": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 5,
             "FeatureFraction": 1.0,
             "LabelColumnName": "Salary",
             "FeatureColumnName": "Features"
@@ -153,15 +359,14 @@
     "Estimators": {
       "e0": "OneHotEncoding",
       "e1": "ReplaceMissingValues",
-      "e2": "FeaturizeText",
-      "e3": "Concatenate",
-      "e4": "FastTreeRegression",
-      "e5": "FastForestRegression",
-      "e6": "LightGbmRegression",
-      "e7": "LbfgsPoissonRegressionRegression",
-      "e8": "SdcaRegression"
+      "e2": "Concatenate",
+      "e3": "FastTreeRegression",
+      "e4": "FastForestRegression",
+      "e5": "LightGbmRegression",
+      "e6": "LbfgsPoissonRegressionRegression",
+      "e7": "SdcaRegression"
     },
-    "Schema": "e0 * e1 * e2 * e3 * (e4 + e5 + e6 + e7 + e8)",
+    "Schema": "e0 * e1 * e2 * (e3 + e4 + e5 + e6 + e7)",
     "MetricName": "RSquared",
     "ModelFilePath": "C:\\Users\\abn\\source\\repos\\WebApplication3\\WebApplication3\\MLModel3.mlnet"
   },

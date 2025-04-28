@@ -74,41 +74,43 @@
                             @Html.DisplayNameFor(model => model.Salary)
                         </dt>
                         <dd class="col-sm-8">
-                            @{
-                                var currencySymbol = "";
-                                switch (Model.Currency)
-                                {
-                                    case "USD":
-                                        currencySymbol = "$";
-                                        break;
-                                    case "GBP":
-                                        currencySymbol = "£";
-                                        break;
-                                    case "EUR":
-                                        currencySymbol = "€";
-                                        break;
-                                    case "ETB":
-                                        currencySymbol = "Br";
-                                        break;
-                                    case "JPY":
-                                        currencySymbol = "¥";
-                                        break;
-                                    default:
-                                        currencySymbol = Model.Currency;
-                                        break;
-                                }
-                            }
-                            @currencySymbol @Model.Salary.ToString("N2")
+                            @* @{ *@
+                            @*     var currencySymbol = ""; *@
+                            @*     switch (Model.Currency) *@
+                            @*     { *@
+                            @*         case "USD": *@
+                            @*             currencySymbol = "$"; *@
+                            @*             break; *@
+                            @*         case "GBP": *@
+                            @*             currencySymbol = "£"; *@
+                            @*             break; *@
+                            @*         case "EUR": *@
+                            @*             currencySymbol = "€"; *@
+                            @*             break; *@
+                            @*         case "ETB": *@
+                            @*             currencySymbol = "Br"; *@
+                            @*             break; *@
+                            @*         case "JPY": *@
+                            @*             currencySymbol = "¥"; *@
+                            @*             break; *@
+                            @*         default: *@
+                            @*             currencySymbol = Model.Currency; *@
+                            @*             break; *@
+                            @*     } *@
+                            @* } *@
+                            @* @currencySymbol @Model.Salary.ToString("N2") *@
+
+                            @Html.DisplayFor(model => model.Salary)
                         </dd>
 
-                        <dt class="col-sm-4">
-                            @Html.DisplayNameFor(model => model.Currency)
-                        </dt>
-                        <dd class="col-sm-8">
-                            <span class="badge bg-primary">
-                                @Html.DisplayFor(model => model.Currency)
-                            </span>
-                        </dd>
+                        @* <dt class="col-sm-4"> *@
+                        @*     @Html.DisplayNameFor(model => model.Currency) *@
+                        @* </dt> *@
+                        @* <dd class="col-sm-8"> *@
+                        @*     <span class="badge bg-primary"> *@
+                        @*         @Html.DisplayFor(model => model.Currency) *@
+                        @*     </span> *@
+                        @* </dd> *@
 
                         <dt class="col-sm-4">
                             @Html.DisplayNameFor(model => model.PhoneNumber)
@@ -125,6 +127,26 @@
                         </dd>
                     </dl>
                 </div>
+                <h3>Attendance Records</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Is Present</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var attendance in Model.Attendances)
+                        {
+                            <tr>
+                                <td>@attendance.Date.ToShortDateString()</td>
+                                <td>@(attendance.IsPresent ? "Yes" : "No")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
                 <div class="card-footer text-muted">
                     <div class="d-flex justify-content-between">
                         <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">

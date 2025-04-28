@@ -81,7 +81,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Employes}/{action=CombinedDashboard}/{id?}");
 
 
 app.MapRazorPages();

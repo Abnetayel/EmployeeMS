@@ -30,6 +30,25 @@ body {
   text-align: start;
 }
 
+/* Dark Mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+    body.dark-mode .bg-primary {
+        background-color: #1f1f1f !important;
+    }
+
+    body.dark-mode .text-white {
+        color: #ffffff !important;
+    }
+
+/* Smooth Font Size Transition */
+body {
+    transition: font-size 0.3s ease;
+}
+
 
 
 

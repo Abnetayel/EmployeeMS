@@ -1,0 +1,26 @@
+﻿@model IEnumerable<WebApplication3.Models.Attendance>
+@{
+    ViewData["Title"] = "Attendance Records";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Date</th>
+            <th>Is Present</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var attendance in Model)
+        {
+            <tr>
+                <td>@attendance.Employee.FullName</td>
+                <td>@attendance.Date.ToShortDateString()</td>
+                <td>@(attendance.IsPresent ? "Yes" : "No")</td>
+            </tr>
+        }
+    </tbody>
+</table>
