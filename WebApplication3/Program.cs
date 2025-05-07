@@ -5,16 +5,41 @@ using WebApplication3.Data;
 using System.Security.Claims;
 using WebApplication3.Repository;
 using WebApplication5.Repository;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
     .AddRazorRuntimeCompilation(); // Enable runtime compilation
 
+
+// Add localization services
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+// Add MVC and Razor Pages with localization support
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization() // Enables localization for Razor views
+    .AddDataAnnotationsLocalization(); // Enables localization for validation attributes
+
+
 // Add Razor Pages (if needed)
 builder.Services.AddRazorPages();
 
+var supportedCultures = new[] { "en-US", "fr-FR", "am-ET" }; // Add more cultures as needed
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-US");
+    options.SupportedCultures = supportedCultures.Select(c => new System.Globalization.CultureInfo(c)).ToList();
+    options.SupportedUICultures = options.SupportedCultures;
+});
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
 // Configure Authentication with Cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -37,6 +62,8 @@ builder.Services.AddAuthorization(options =>
         policy.RequireClaim(ClaimTypes.Role,"Admin", "SuperAdmin"));
     options.AddPolicy("User", policy =>
        policy.RequireClaim(ClaimTypes.Role, "User"));
+    options.AddPolicy("Employee", policy =>
+   policy.RequireClaim(ClaimTypes.Role, "Employee"));
 });
 
 // Configure DbContext with SQL Server
@@ -68,12 +95,15 @@ if (!app.Environment.IsDevelopment())
     
     app.UseHsts();
 }
-
+// Use localization middleware
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -81,7 +111,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Employes}/{action=CombinedDashboard}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 
 app.MapRazorPages();

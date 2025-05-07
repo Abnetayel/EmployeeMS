@@ -104,6 +104,41 @@
     </div>
 </div>
 
+<div class="col-12 mt-5">
+    <h2 class="mb-4">Skills and Experience</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Average Experience by Skill</h5>
+            <canvas id="skillsExperienceChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="col-12 mt-5"> 
+    <h2 class="mb-4">Monthly Attendance Trends</h2> 
+     <div class="card"> 
+         <div class="card-body"> 
+            <h5 class="card-title">Attendance Trends</h5> 
+             <canvas id="attendanceTrendsChart"></canvas> 
+        </div> 
+     </div> 
+ </div> 
+
+
+@* <div> *@
+@*     <canvas id="attendanceChart" width="400" height="200"></canvas> *@
+@* </div> *@
+
+@* <div class="col-12 mt-5"> *@
+@*     <h2 class="mb-4">Task Completion by Employee</h2> *@
+@*     <div class="card"> *@
+@*         <div class="card-body"> *@
+@*             <h5 class="card-title">Task Completion Overview</h5> *@
+@*             <canvas id="taskCompletionChart"></canvas> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+
 @section Scripts {
     <script>
         // Gender Distribution Chart
@@ -120,5 +155,70 @@
             type: 'pie',
             data: genderData,
         });
+
+
+          // Skills and Experience Chart
+        const skillsCtx = document.getElementById('skillsExperienceChart').getContext('2d');
+        const skillsData = {
+            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SkillsExperience.Select(s => s.Skill))),
+            datasets: [{
+                label: 'Average Experience (Years)',
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.SkillsExperience.Select(s => s.AverageExperience))),
+                backgroundColor: '#007bff',
+                borderColor: '#0056b3',
+                borderWidth: 1
+            }]
+        };
+        new Chart(skillsCtx, {
+            type: 'bar',
+            data: skillsData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+           const attendanceCtx = document.getElementById('attendanceTrendsChart').getContext('2d');  
+           const attendanceData = {  
+              labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.MonthlyAttendanceTrends?.Select(t => t.Month) ?? Enumerable.Empty<string>())),  
+              datasets: [  
+                  {  
+                      label: 'Present Days',  
+                      data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.MonthlyAttendanceTrends?.Select(t => t.PresentDays) ?? Enumerable.Empty<int>())),  
+                      backgroundColor: '#28a745',  
+                      borderColor: '#1e7e34',  
+                      borderWidth: 1  
+                  },  
+                  {  
+                      label: 'Absent Days',  
+                      data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.MonthlyAttendanceTrends?.Select(t => t.AbsentDays) ?? Enumerable.Empty<int>())),  
+                      backgroundColor: '#dc3545',  
+                      borderColor: '#bd2130',  
+                      borderWidth: 1  
+                  }  
+              ]  
+           };  
+           new Chart(attendanceCtx, {  
+              type: 'bar',  
+              data: attendanceData,  
+              options: {  
+                  scales: {  
+                      y: {  
+                          beginAtZero: true  
+                      }  
+                  }  
+              }  
+           });
+
+
+
+        
+
+
+
+
     </script>
 }

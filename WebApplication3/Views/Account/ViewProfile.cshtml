@@ -1,0 +1,14 @@
+﻿@model UserProfileViewModel
+
+<div class="container py-5">
+    <h1 class="mb-4">View Profile</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Profile Details</h5>
+            <p><strong>Username:</strong> @Model.UserName</p>
+            <p><strong>Email:</strong> @Model.Email</p>
+            <p><strong>Role:</strong> @Model.Role</p>
+        </div>
+    </div>
+    <a asp-action="EditProfile" class="btn btn-primary mt-3">Edit Profile</a>
+</div>

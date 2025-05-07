@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Net.Mail;
+using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -82,6 +84,7 @@ public class AdminController : Controller
         user.Password = passwordHasher.HashPassword(user, model.Password);
 
         _context.Users.Add(user);
+        await SendEmployeeDetailsEmail(model);
         await _context.SaveChangesAsync();
 
         return RedirectToAction("SuperAdminDashboard");
@@ -115,39 +118,80 @@ public class AdminController : Controller
         user.Password = passwordHasher.HashPassword(user, model.Password);
 
         _context.Users.Add(user);
+        await SendEmployeeDetailsEmail(model);
         await _context.SaveChangesAsync();
 
         return RedirectToAction("AdminDashboard");
     }
 
 
-    [HttpGet]
-    [Authorize(Policy = "SuperAdminOnly")]
-    public async Task<IActionResult> EditUser(int? id)
+    private async Task SendEmployeeDetailsEmail(RegistrationViewModel user)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+      
+        // Email subject and body
+        var subject = " You Registerd ";
+        var body = $@"
+        <h1>Your Information </h1>
+        <p><strong>UserName:</strong> {user.UserName}</p>    
+        <p><strong>Your Role:</strong> {user.Role}</p>    
+        <p><strong>Password:</strong> {user.Password}</p>";
 
-        var user = await _context.Users.FindAsync(id);
-        if (user == null)
+        using var smtpClient = new SmtpClient("smtp.gmail.com")
         {
-            return NotFound();
-        }
-
-        // Map the User entity to EditUserModel
-        var editUserModel = new EditUserModel
-        {
-            Id = user.Id,
-            UserName = user.UserName,
-            Email = user.Email,
-            Role = user.Role
-            // Map any other properties that exist in both models
+            Port = 587,
+            Credentials = new NetworkCredential("abnetayele694@gmail.com", "emcfhgtxvskobzwy"),
+            EnableSsl = true
         };
 
-        return View(editUserModel);
+        var mailMessage = new MailMessage
+        {
+            From = new MailAddress("abnetayele694@gmail.com"),
+            Subject = subject,
+            Body = body,
+            IsBodyHtml = true
+        };
+        mailMessage.To.Add(user.Email);
+
+        try
+        {
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to send email to {user.Email}: {ex.Message}");
+        }
+        //}
     }
+
+
+
+    //[HttpGet]
+    //[Authorize(Policy = "SuperAdminOnly")]
+    //public async Task<IActionResult> EditUser(int? id)
+    //{
+    //    if (id == null)
+    //    {
+    //        return NotFound();
+    //    }
+
+    //    var user = await _context.Users.FindAsync(id);
+    //    if (user == null)
+    //    {
+    //        return NotFound();
+    //    }
+
+    //    // Map the User entity to EditUserModel
+    //    var editUserModel = new EditUserModel
+    //    {
+    //        Id = user.Id,
+    //        UserName = user.UserName,
+    //        Email = user.Email,
+    //        Role = user.Role
+           
+    //    };
+
+    //    return View(editUserModel);
+    //}
 
 
 
@@ -190,22 +234,6 @@ public class AdminController : Controller
         TempData["SuccessMessage"] = "Employees assigned successfully.";
         return RedirectToAction("AdminDashboard");
     }
-
-    //[HttpGet]
-    //[Authorize(Policy = "AdminOrHigher")]
-    //public IActionResult AssignEmployees()
-    //{
-    //    var users = _context.Users.Select(u => new { u.Id, u.UserName }).ToList();
-    //    var employees = _context.Employee.Select(e => new { e.Id, e.FullName }).ToList();
-
-    //    var model = new AssignEmployeesViewModel
-    //    {
-    //        Users = new SelectList(users, "Id", "UserName"),
-    //        Employees = new SelectList(employees, "Id", "FullName")
-    //    };
-
-    //    return View(model);
-    //}
 
     [HttpGet]
     [Authorize(Policy = "AdminOrHigher")]
@@ -260,112 +288,21 @@ public class AdminController : Controller
 
     }
 
-    //[HttpPost]
-    //[Authorize(Policy = "SuperAdminOnly")]
-    //public async Task<IActionResult> EditUser(User model)
-    //{
-    //    if (!ModelState.IsValid)
-    //    {
-    //        return View(model);
-    //    }
-
-    //    var user = await _context.Users.FindAsync(model.Id);
-    //    if (user == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    user.UserName = model.UserName;
-    //    user.Email = model.Email;
-
-    //    await _context.SaveChangesAsync();
-
-    //    TempData["SuccessMessage"] = "User updated successfully";
-    //return RedirectToAction("SuperAdminDashboard");
-    //}
-
-    //public async Task<IActionResult> EditUser(int id, string newRole, [Bind("Id,UserName,Email")] User user)
-    //{
-    //    if (id != user.Id)
-    //    {
-    //        // Should return an error, not just log to console
-    //        TempData["ErrorMessage"] = "ID mismatch";
-    //        return RedirectToAction("SuperAdminDashboard");
-    //    }
-
-    //    if (ModelState.IsValid)
-    //    {
-    //        try
-    //        {
-    //            // Get the existing user from database
-    //            var existingUser = await _context.Users.FindAsync(id);
-    //            if (existingUser == null)
-    //            {
-    //                return NotFound();
-    //            }
-
-    //            // Update only the allowed properties (to prevent overposting)
-    //            existingUser.UserName = user.UserName;
-    //            existingUser.Email = user.Email;
-
-    //            // Update the role if newRole parameter is provided
-    //            if (!string.IsNullOrEmpty(newRole))
-    //            {
-    //                existingUser.Role = newRole;
-    //            }
-
-    //            _context.Update(existingUser);
-    //            await _context.SaveChangesAsync();
-
-    //            return RedirectToAction("SuperAdminDashboard");
-    //        }
-    //        catch (DbUpdateConcurrencyException)
-    //        {
-    //            if (!UserExists(user.Id))
-    //            {
-    //                return NotFound();
-    //            }
-    //            else
-    //            {
-    //                throw;
-    //            }
-    //        }
-    //    }
-
-    //    // If we got this far, something failed, redisplay form
-    //    return View(user);
-    //}
-
-    //private bool UserExists(int id)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
 
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditUser(EditUserModel user)
-     //int id,
-     //[Bind("Id,UserName,Email,Role")] EditUserModel user,  
-     ////string Password,
-     //String Role)  
+    
     {
-        //if (id != user.Id)
-        //{
-        //    TempData["ErrorMessage"] = "ID mismatch";
-        //    return RedirectToAction("SuperAdminDashboard");
-        //}
+       
 
         if (user.Role == "SuperAdmin")
         {
             TempData["ErrorMessage"] ="Not recommended";
             return RedirectToAction("SuperAdminDashboard");
         }
-        //if (user.Password=="")
-        //{
-
-        //}
+        
         TryValidateModel(user);
 
         if (ModelState.IsValid)
@@ -376,9 +313,7 @@ public class AdminController : Controller
                 if (existingUser == null)
                 {
                     return NotFound();
-                }
-                 
-                
+                }                             
                 existingUser.UserName = user.UserName;
                 existingUser.Email = user.Email;
                 existingUser.Role = user.Role;
@@ -422,30 +357,48 @@ public class AdminController : Controller
         return RedirectToAction("List", "Employes");
     }
 
-
-
-
-
-
-
-
-    //[HttpPost]
-    //[Authorize(Policy = "UserOrHigher")]
-    //public async Task<IActionResult> AddEmployee(Employe model)
-    //{
-    //    if (!ModelState.IsValid)
-    //    {
-    //        return View(model);
-    //    }
-
-    //    _context.Employee.Add(model);
-    //    await _context.SaveChangesAsync();
-
-    //    return RedirectToAction("UserDashboard");
-    //}
-
     private bool UserExists(int id)
     {
         return _context.Users.Any(e => e.Id == id);
     }
+
+
+    [Authorize(Policy = "SuperAdminOnly")]
+    [HttpGet]
+    public IActionResult UpdateSalary(int employeeId)
+    {
+        var employee = _context.Employee.FirstOrDefault(e => e.Id == employeeId);
+        if (employee == null)
+        {
+            return NotFound();
+        }
+        var model = new UpdateSalaryViewModel
+        {
+            EmployeeId = employee.Id,
+            Salary = employee.Salary
+        };
+        return View(model);
+    }
+    [Authorize(Policy = "SuperAdminOnly")]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult UpdateSalary(UpdateSalaryViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var employee = _context.Employee.FirstOrDefault(e => e.Id == model.EmployeeId);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            employee.Salary = model.Salary;
+            _context.SaveChanges();
+
+            TempData["Message"] = "Salary updated successfully.";
+            return RedirectToAction("List", "Employes");
+        }
+        return View(model);
+    }
+
 }

@@ -1,3 +1,6 @@
-﻿@{
-    Layout = "_Layout";
+﻿@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Theme"] = ThemeHelper.GetTheme(HttpContextAccessor);
 }

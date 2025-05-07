@@ -11,8 +11,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
 </head>
-<body>
+<body class="@ViewData["Theme"]">
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="bg-primary border-end" id="sidebar-wrapper">
@@ -46,9 +47,15 @@
                                         <i class="fas fa-user-plus me-2"></i>Add User
                                     </a>
                                 </li>
+                                <li>                                   
+                                            <a class="dropdown-item" asp-action="Create" asp-controller="Employes">
+                                                <i class="fas fa-user-tie me-2"></i>Add Employee
+                                            </a>                                                                              
+                                                                      
+                                </li>
                                 <li>
-                                    <a class="dropdown-item" asp-action="Create" asp-controller="Employes">
-                                        <i class="fas fa-user-tie me-2"></i>Add Employee
+                                    <a class="dropdown-item" asp-action="PendingSubmissions" asp-controller="EmployeeSubmission">
+                                        <i class="fas fa-user-tie me-2"></i>PendingSubmissions
                                     </a>
                                 </li>
                              
@@ -80,10 +87,16 @@
                                         <i class="fas fa-user-tie me-2"></i>Add Employee
                                     </a>
                                 </li>
+                                @* <li class="nav-item"> *@
+                                @*     <a class="nav-link" asp-controller="EmployeeSubmission" asp-action="Submit">Submit Employee</a> *@
+                                @* </li> *@
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="EmployeeSubmission" asp-action="PendingSubmissions">Pending Submissions</a>
+                                </li>
                             </ul>
                         </li>
                     }
-                    else
+                    else if (User.IsInRole("User"))
                     {
                       
                         <li class="nav-item dropdown">
@@ -97,11 +110,24 @@
                                         <i class="fas fa-user-tie me-2"></i>Employee Attendace
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Attendance" asp-action="Analytics">Attendance Analytics</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Employes" asp-action="MyEmployees">My Employees</a>
+                                </li>
+
                             </ul>
                         </li>
 
                     }
 
+                    else {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="EmployeePortal" asp-action="Index">Employee Portal</a>
+                        </li>
+                    }
                     <!-- Common menu items for all roles -->
                     <div class="dropdown">
                         <a href="#" class="list-group-item list-group-item-action bg-primary text-white dropdown-toggle" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -133,7 +159,6 @@
                     <i class="fas fa-cog me-2"></i>Settings
                 </a>
 
-
             </div>
         </div>
 
@@ -149,6 +174,31 @@
                             <i class="fas fa-users"></i> Employee Management
                         </h1>
 
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/EmployeeSubmission/Submit">Submit Form</a>
+                            </li>
+                            @* <li class="nav-item"> *@
+                            @*     <a class="nav-link" href="/EmployeeSubmission/PendingSubmissions">Pending Submissions</a> *@
+                            @* </li> *@
+                        </ul>
+
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Language
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="en-US" asp-route-returnUrl="@Context.Request.Path">English</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="fr-FR" asp-route-returnUrl="@Context.Request.Path">Français</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-culture="am-ET" asp-route-returnUrl="@Context.Request.Path">አማርኛ</a></li>
+                            </ul>
+                        </div>
+
+
+
                         <div class="navbar-collapse collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto">
                                 @if (User.Identity.IsAuthenticated)
@@ -158,9 +208,9 @@
                                             <i class="fas fa-user-circle me-1"></i> @User.Identity.Name
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
-                                            <li><hr class="dropdown-divider"></li>
+                                            @* <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li> *@
+                                            @* <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li> *@
+                                            @* <li><hr class="dropdown-divider"></li> *@
                                             <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                                         </ul>
                                     </li>
@@ -174,6 +224,7 @@
                                         <a class="nav-link text-white" asp-controller="Account" asp-action="Registation">Register</a>
                                     </li>
                                 }
+                          
                             </ul>
                         </div>
                     </div>
@@ -185,12 +236,7 @@
                     @RenderBody()
                 </main>
             </div>
-
-            @* <footer class="footer text-muted bg-light py-3"> *@
-            @*     <div class="container-fluid text-center"> *@
-            @*         &copy; 2025 - Employee Management *@
-            @*     </div> *@
-            @* </footer> *@
+           
         </div>
         <!-- Settings Modal -->
         <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
@@ -200,19 +246,12 @@
                         <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <!-- Dark Mode Toggle -->
-                        <div class="form-check form-switch mb-3">
-                            <input class="form-check-input" type="checkbox" id="darkModeToggle">
-                            <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
-                        </div>
-
+                    <div class="modal-body">                      
                         <!-- Font Size Adjustment -->
                         <div class="mb-3">
                             <label for="fontSizeRange" class="form-label">Font Size</label>
                             <input type="range" class="form-range" id="fontSizeRange" min="14" max="20" step="1">
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -220,11 +259,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
 
     </div>
 
@@ -243,17 +277,9 @@
 
           
         document.addEventListener('DOMContentLoaded', function () {
-            const body = document.body;
-            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;           
             const fontSizeRange = document.getElementById('fontSizeRange');
-            // const sidebarToggleSwitch = document.getElementById('sidebarToggleSwitch');
-            // const wrapper = document.getElementById('wrapper');
-
-            // Load saved preferences
-            if (localStorage.getItem('darkMode') === 'enabled') {
-                body.classList.add('dark-mode');
-                darkModeToggle.checked = true;
-            }
+          
 
             const savedFontSize = localStorage.getItem('fontSize');
             if (savedFontSize) {
@@ -266,17 +292,6 @@
                 sidebarToggleSwitch.checked = true;
             }
 
-            // Dark Mode Toggle
-            darkModeToggle.addEventListener('change', function () {
-                if (darkModeToggle.checked) {
-                    body.classList.add('dark-mode');
-                    localStorage.setItem('darkMode', 'enabled');
-                } else {
-                    body.classList.remove('dark-mode');
-                    localStorage.setItem('darkMode', 'disabled');
-                }
-            });
-
             // Font Size Adjustment
             fontSizeRange.addEventListener('input', function () {
                 const fontSize = fontSizeRange.value;
@@ -285,7 +300,19 @@
             });
 
         });
-        
+
+        //    document.addEventListener('DOMContentLoaded', function () {
+        //     const themeIcon = document.getElementById('themeIcon');
+        //     const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+
+        //     Set the initial icon based on the current theme
+        //     themeIcon.className = currentTheme === 'dark' ? 'bi bi-moon' : 'bi bi-sun';
+
+        //     Update the icon dynamically when the theme changes
+        //     document.querySelector('form[asp-action="ToggleTheme"]').addEventListener('submit', function () {
+        //         themeIcon.className = themeIcon.className === 'bi bi-sun' ? 'bi bi-moon' : 'bi bi-sun';
+        //     });
+        // });
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

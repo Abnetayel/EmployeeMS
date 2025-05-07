@@ -1,0 +1,42 @@
+﻿@model IEnumerable<WebApplication3.Models.Employe>
+
+<div class="container py-5">
+    <h1>My Employees</h1>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted">You have no employees assigned to you.</p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Age</th>
+                    <th>Experience</th>
+                    <th>Education</th>
+                    <th>Skills</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model)
+                {
+                    <tr>
+                        <td>@employee.FullName</td>
+                        <td>@employee.Age</td>
+                        <td>@employee.Experience</td>
+                        <td>@employee.Education</td>
+                        <td>@employee.Skills</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-info btn-sm">Details</a>
+                            @* <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary btn-sm">Edit</a> *@
+                            @* <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger btn-sm">Delete</a> *@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

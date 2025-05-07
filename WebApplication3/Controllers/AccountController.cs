@@ -10,6 +10,11 @@ using Microsoft.CodeAnalysis.Scripting;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using ISO3166;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using CloudinaryDotNet;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 namespace WebApplication3.Controllers
 
 {
@@ -20,10 +25,225 @@ namespace WebApplication3.Controllers
         {
             _context = context;
         }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+     
+
+        private List<User> GetSuperAdmins()
+        {
+            return _context.Users.Where(u => u.Role == "SuperAdmin").ToList();
+        }
+
+        private async Task NotifySuperAdminsAboutNewEmployee(Employe employee)
+        {
+            var superAdmins = GetSuperAdmins();
+            if (!superAdmins.Any())
+            {
+                Console.WriteLine("No SuperAdmins found to notify.");
+                return;
+            }
+
+            var subject = "New Employee Registration";
+            var body = $@"
+        <h1>New Employee Registered</h1>
+        <p><strong>Full Name:</strong> {employee.FullName}</p>
+        <p><strong>Email:</strong> {employee.PhoneNumber}</p>
+        <p><strong>Country:</strong> {employee.Country}</p>
+        <p><strong>Registration Date:</strong> {employee.DateOfRegistration}</p>";
+
+            using var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("abnetayele694@gmail.com", "emcfhgtxvskobzwy"),
+                EnableSsl = true
+            };
+
+            foreach (var superAdmin in superAdmins)
+            {
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress("abnetayele694@gmail.com"),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+                mailMessage.To.Add(superAdmin.Email);
+
+                try
+                {
+                    await smtpClient.SendMailAsync(mailMessage);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to send email to {superAdmin.Email}: {ex.Message}");
+                }
+            }
+        }
+
+
+        //[Authorize]
+        [HttpGet]
+
+
+        public IActionResult RegisterEmployee()
+        {
+            var countries = Country.List.Select(c => new { c.Name }).ToList();
+            ViewBag.Countries = new SelectList(countries, "Name", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterEmployee(RegisterEmployeeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Check if the email is already registered
+                if (_context.Users.Any(u => u.Email == model.Email))
+                {
+                    ModelState.AddModelError("", "Email is already registered.");
+                    return View(model);
+                }
+
+                var passwordHasher = new PasswordHasher<User>();
+                // Create a new user
+                var user = new User
+                {
+                    UserName = model.Email, // Use email as username
+                    Email = model.Email,
+                    //Password = BCrypt.Net.BCrypt.HashPassword(model.Password), // Hash the password
+                    Role = "Employee" // Assign the "Employee" role
+                };
+
+                user.Password = passwordHasher.HashPassword(user, model.Password); // Hash the password
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                // Create an associated employee record
+                var employee = new Employe
+                {
+                    FullName = model.FullName,
+                    PhoneNumber = model.PhoneNumber,
+                    Country = model.Country,
+                    DateOfRegistration = DateTime.Now,
+                    Age = model.Age,
+                    Experience = model.Experience,
+                    Education = model.Education,
+                    Skills = model.Skills,
+                    Gender = model.Gender,
+                    EmployementType = model.EmployementType,
+                    Salary = 0, // Default salary; to be updated by SuperAdmin
+                    ManagerId = null // No manager assigned initially
+                };
+
+                _context.Employee.Add(employee);
+                await _context.SaveChangesAsync();
+
+                await NotifySuperAdminsAboutNewEmployee(employee);
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            var countries = Country.List.Select(c => new { c.Name }).ToList();
+            ViewBag.Countries = new SelectList(countries, "Name", "Name");
+            return View(model);
+        }
+
+
+
+
+
+
+        public IActionResult ViewProfile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            var user = _context.Users.FirstOrDefault(u => u.Id.ToString() == userId);
+            if (user == null)
+            {
+                return NotFound();
+
+            }
+            var model = new UserProfileViewModel
+            {
+                Email = user.Email,
+                UserName = user.UserName,
+                Role = user.Role
+            };
+
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("Account/EditProfile")]
+        public IActionResult EditProfile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Use ClaimTypes.Email
+            if (userId==null)
+            {
+                return Unauthorized(); // Return 401 if the email claim is missing
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Id.ToString() == userId);
+            if (user == null)
+            {
+                return NotFound(); // Return 404 if the user is not found
+            }
+            var model = new EditUserModel1
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName=user.UserName
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditProfile(EditUserModel1 model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Use ClaimTypes.Email
+            if (userId==null)
+            {
+                return Unauthorized(); 
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Id.ToString() == userId);
+            if (user == null)
+            {
+                return NotFound(); 
+            }
+
+            // Verify current password
+            var passwordHasher = new PasswordHasher<User>();
+            var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.Password, model.CurrentPassword);
+            if (passwordVerificationResult != PasswordVerificationResult.Success)
+            {
+                ModelState.AddModelError("CurrentPassword", "Current password is incorrect.");
+                return View(model);
+            }
+
+            // Update email and password
+            user.UserName = model.UserName;
+            user.Email = model.Email;
+            user.Password = passwordHasher.HashPassword(user, model.NewPassword);
+
+            _context.SaveChanges();
+
+            TempData["Message"] = "Profile updated successfully.";
+            return RedirectToAction("ViewProfile");
+
+        }
+
+   
+
         [HttpGet]
         public IActionResult Registation()
         {
@@ -32,9 +252,10 @@ namespace WebApplication3.Controllers
         [HttpPost]
         public IActionResult Registation(RegistrationViewModel model)
         {
+            
             if (!ModelState.IsValid)
             {
-
+                 
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 foreach (var error in errors)
                 {
@@ -111,6 +332,7 @@ namespace WebApplication3.Controllers
                     {
                         var claims = new List<Claim>
                 {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.Role, user.Role) 
@@ -119,13 +341,15 @@ namespace WebApplication3.Controllers
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                        
+
                         if (user.Role == "SuperAdmin")
                             return RedirectToAction("SuperAdminDashboard", "Admin");
                         else if (user.Role == "Admin")
                             return RedirectToAction("AdminDashboard", "Admin");
+                        else if (user.Role == "User")
+                            return RedirectToAction("UserDashboard", "Admin");                    
                         else
-                            return RedirectToAction("UserDashboard", "Admin");
+                            return RedirectToAction("Index", "EmployeePortal");
                     }
                     else
                     {
@@ -140,13 +364,17 @@ namespace WebApplication3.Controllers
             }
             return View(model);
         }
-        
+
 
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
+            return RedirectToAction("Login", "Account");
         }
+
 
 
         [HttpGet]
@@ -230,8 +458,6 @@ namespace WebApplication3.Controllers
             ViewBag.Message = "Your password has been reset successfully.";
             return RedirectToAction("Login");
         }
-
-
 
         private async Task SendResetLinkEmail(string email, string resetLink)
         {

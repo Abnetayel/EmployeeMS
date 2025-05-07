@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<data name="PageTitle" xml:space="preserve">
+    <value>Envíos pendientes de empleados</value>
+  </data>
+	<data name="FullName" xml:space="preserve">
+    <value>ሙሉ ስም</value>
+  </data>
+	<data name="SubmittedBy" xml:space="preserve">
+    <value>ያስገቢው ስም</value>
+  </data>
+	<data name="DateOfSubmission" xml:space="preserve">
+    <value>ቀን</value>
+  </data>
+	<data name="Actions" xml:space="preserve">
+    <value>ተግባር</value>
+  </data>
+	<data name="AssignManager" xml:space="preserve">
+    <value>ተቆጣጣሪ</value>
+  </data>
+	<data name="ApproveButton" xml:space="preserve">
+    <value>አረጋግጥ</value>
+  </data>
+</root>

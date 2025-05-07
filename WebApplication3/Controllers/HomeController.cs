@@ -1,36 +1,18 @@
-using System.Diagnostics;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication3.Models;
 
-namespace WebApplication3.Controllers
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    public IActionResult SetLanguage(string culture, string returnUrl = "/")
     {
-        private readonly ILogger<HomeController> _logger;
+        Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+        );
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-        public IActionResult About()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        // Ensure returnUrl is not null
+        return LocalRedirect(returnUrl ?? "/");
     }
+
 }

@@ -12,6 +12,8 @@ namespace WebApplication3.Data
         public DbSet<Employe> Employee { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<OnboardingTask> OnboardingTasks { get; set; }
+        public DbSet<EmployeeSubmission> EmployeeSubmissions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
@@ -27,7 +29,7 @@ namespace WebApplication3.Data
        .WithMany(e => e.Attendances)
        .HasForeignKey(a => a.EmployeeId);
 
-            modelBuilder.Entity<Employe>()
+        modelBuilder.Entity<Employe>()
        .HasOne(e => e.Manager)
        .WithMany(u => u.ManagedEmployees)
        .HasForeignKey(e => e.ManagerId)

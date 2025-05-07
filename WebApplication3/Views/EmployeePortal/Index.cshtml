@@ -1,0 +1,34 @@
+﻿@model WebApplication3.Models.EmployeePortalViewModel
+
+<div class="container py-5">
+    <h1>Welcome, @Model.Employee.FullName</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Profile</h2>
+            <p><strong>phone:</strong> @Model.Employee.PhoneNumber</p>
+            <p><strong>Country:</strong> @Model.Employee.Country</p>
+            <a asp-action="EditProfile" class="btn btn-primary">Edit Profile</a>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Attendance</h2>
+            <p><strong>Days Present:</strong> @Model.AttendanceSummary.PresentDays</p>
+            <p><strong>Days Absent:</strong> @Model.AttendanceSummary.AbsentDays</p>
+            <a asp-action="Attendance" class="btn btn-primary">View Attendance</a>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h2>Onboarding Tasks</h2>
+            <ul>
+                @foreach (var task in Model.OnboardingTasks)
+                {
+                    <li>@task.TaskName - @(task.IsCompleted ? "Completed" : "Pending")</li>
+                }
+            </ul>
+            <a asp-action="OnboardingTask" class="btn btn-primary">View Tasks</a>
+        </div>
+    </div>
+</div>

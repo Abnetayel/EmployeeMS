@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<div class="container py-5">
+    <h1>@Localizer["PageTitle"]</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Localizer["FullName"]</th>
+                <th>@Localizer["SubmittedBy"]</th>
+                <th>@Localizer["DateOfSubmission"]</th>
+                <th>@Localizer["Actions"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var submission in Model.EmployeeSubmission)
+            {
+                <tr>
+                    <td>@submission.FullName</td>
+                    <td>@submission.SubmittedBy</td>
+                    <td>@submission.DateOfSubmission.ToShortDateString()</td>
+                    <td>
+                        <form asp-action="ApproveSubmission" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@submission.Id" />
+                            <label for="managerId">@Localizer["AssignManager"]:</label>
+                            <select name="managerId" id="managerId" class="form-select">
+                                @foreach (var user in Model.Users)
+                                {
+                                    <option value="@user.Id">@user.UserName</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-success btn-sm mt-2">@Localizer["ApproveButton"]</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

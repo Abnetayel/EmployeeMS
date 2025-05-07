@@ -149,12 +149,14 @@
 
                 <div class="card-footer text-muted">
                     <div class="d-flex justify-content-between">
-                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Edit
+                        <a asp-action="UpdateSalary" asp-controller="Admin" asp-route-employeeId="@Model.Id" class="btn btn-primary">
+                            Update Salary
                         </a>
-                        <a asp-action="Index" class="btn btn-secondary">
+
+						<a asp-action="Index" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Back to List
                         </a>
+                        <a asp-action="OnboardingTasks" asp-route-employeeId="@Model.Id" class="btn btn-info">Manage Onboarding Tasks</a>
                     </div>
                 </div>
             </div>

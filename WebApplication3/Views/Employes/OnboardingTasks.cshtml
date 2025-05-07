@@ -1,0 +1,55 @@
+﻿@model WebApplication3.Models.OnboardingTaskViewModel
+
+<div class="container py-5">
+    <h1>Onboarding Tasks for @Model.EmployeeName</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Description</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Model.Tasks)
+            {
+                <tr>
+                    <td>@task.TaskName</td>
+                    <td>@task.Description</td>
+                    <td>@task.DueDate.ToShortDateString()</td>
+                    <td>@(task.IsCompleted ? "Completed" : "Pending")</td>
+                    <td>
+                        @if (!task.IsCompleted)
+                        {
+                            <form asp-action="CompleteTask" method="post" style="display:inline;">
+                                <input type="hidden" name="taskId" value="@task.Id" />
+                                <button type="submit" class="btn btn-success btn-sm">Mark as Completed</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h2>Add New Task</h2>
+    <form asp-action="AddOnboardingTask" method="post">
+        <input type="hidden" name="EmployeeId" value="@Model.EmployeeId" />
+        <div class="mb-3">
+            <label for="TaskName" class="form-label">Task Name</label>
+            <input type="text" name="TaskName" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label for="Description" class="form-label">Description</label>
+            <textarea name="Description" class="form-control" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="DueDate" class="form-label">Due Date</label>
+            <input type="date" name="DueDate" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+</div>

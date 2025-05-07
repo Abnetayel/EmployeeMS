@@ -1,0 +1,72 @@
+﻿@model WebApplication3.Models.EmployeeSubmission
+
+<div class="container py-5">
+    <h1>Submit Employee Information</h1>
+    <form asp-action="Submit" method="post">
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label">Full Name</label>
+            <input asp-for="FullName" class="form-control" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Age" class="form-label">Age</label>
+            <input asp-for="Age" type="number" class="form-control" />
+            <span asp-validation-for="Age" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Experience" class="form-label">Experience</label>
+            <input asp-for="Experience" type="number" class="form-control" />
+            <span asp-validation-for="Experience" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Education" class="form-label">Education</label>
+            <input asp-for="Education" class="form-control" />
+            <span asp-validation-for="Education" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Skills" class="form-label">Skills</label>
+            <input asp-for="Skills" class="form-control" />
+            <span asp-validation-for="Skills" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Gender" class="form-label">Gender</label>
+            <select asp-for="Gender" class="form-control">
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </select>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="EmployementType" class="form-label">Employment Type</label>
+            <select asp-for="EmployementType" class="form-control">
+                <option>Full-time</option>
+                <option>Part-time</option>
+                <option>Contract</option>
+                <option>Freelance</option>
+            </select>
+            <span asp-validation-for="EmployementType" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Salary" class="form-label">Salary</label>
+            <input asp-for="Salary" type="number" class="form-control" />
+            <span asp-validation-for="Salary" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Country" class="form-label">Country</label>
+            <input asp-for="Country" class="form-control" />
+            <span asp-validation-for="Country" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="SubmittedBy" class="form-label">Submitted By</label>
+            <input asp-for="SubmittedBy" class="form-control" />
+            <span asp-validation-for="SubmittedBy" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

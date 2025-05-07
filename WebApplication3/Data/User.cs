@@ -32,5 +32,9 @@ namespace WebApplication3.Data
         public string? PasswordResetToken { get; set; }
         public DateTime? PasswordResetTokenExpiry { get; set; }
 
+        public static implicit operator User(List<object> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

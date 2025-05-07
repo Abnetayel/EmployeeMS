@@ -1,0 +1,23 @@
+﻿@model List<WebApplication3.Models.OnboardingTask>
+
+<h1>Onboarding Tasks</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Task Name</th>
+            <th>Description</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.TaskName</td>
+                <td>@task.Description</td>
+                <td>@(task.IsCompleted ? "Completed" : "Pending")</td>
+            </tr>
+        }
+    </tbody>
+</table>
